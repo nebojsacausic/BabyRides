@@ -85,7 +85,6 @@ function registerCheck(){
                 email : entry_email,
                 address : entry_address,
                 pass : entry_pass,
-                pass_repeat : entry_pass_repeat,
                 sent : true
             },
             success : function(data){

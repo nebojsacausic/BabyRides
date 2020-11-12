@@ -9,7 +9,6 @@ if(isset($_POST['sent'])){
     $email = $_POST['email'];
     $address = $_POST['address'];
     $pass = $_POST['pass'];
-    $pass_repeat = $_POST['pass_repeat'];
 
     //Regex back
     $regName = "/^[A-Z][a-z]{2,24}$/";
@@ -34,9 +33,7 @@ if(isset($_POST['sent'])){
     if(!preg_match($regPass, $pass)){
         $errBack[] = "Invalid format of password!";
     }
-    if($pass_repeat != $pass){
-        $errBack[] = "Passwords do not match!";
-    }
+    $pass = md5($pass);
 
     //If there are no errors, entering in the database
     if(count($errBack) > 0){
@@ -44,14 +41,13 @@ if(isset($_POST['sent'])){
     }
     else{
 
-        $querry = "insert into users values(null, :fName, :lName, :email, :address, :pass, :pass_repeat)";
+        $querry = "insert into users values(null, :fName, :lName, :email, :address, :pass)";
         $statement = $connection -> prepare($querry);
         $statement -> bindParam(":fName", $fName);
         $statement -> bindParam(":lName", $lName);
         $statement -> bindParam(":email", $email);
         $statement -> bindParam(":address", $address);
         $statement -> bindParam(":pass", $pass);
-        $statement -> bindParam(":pass_repeat", $pass_repeat);
 
         $result = $statement->execute() ? 201 : 500;
         $message = "Successfully added user!";
