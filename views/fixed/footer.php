@@ -123,5 +123,9 @@
 	<script src="js/easing.js"></script>
 	<!-- Active JS -->
 	<script src="js/active.js"></script>
+
+
+	<!-- My JS -->
+	<script src="js/register.js" type="text/javascript"></script>
 </body>
 </html>

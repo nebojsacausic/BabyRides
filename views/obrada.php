@@ -41,13 +41,14 @@ if(isset($_POST['sent'])){
     }
     else{
 
-        $querry = "insert into users values(null, :fName, :lName, :email, :address, :pass)";
+        $querry = "insert into users values(null, :fName, :lName, :email, :address, :pass, 2)";
         $statement = $connection -> prepare($querry);
         $statement -> bindParam(":fName", $fName);
         $statement -> bindParam(":lName", $lName);
         $statement -> bindParam(":email", $email);
         $statement -> bindParam(":address", $address);
         $statement -> bindParam(":pass", $pass);
+
 
         $result = $statement->execute() ? 201 : 500;
         $message = "Successfully added user!";
