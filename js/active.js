@@ -271,21 +271,9 @@ Version:1.0
 		/*=====================================
 		15.  Video Popup JS
 		======================================*/ 
-		$('.video-popup').magnificPopup({
-			type: 'iframe',
-			removalDelay: 300,
-			mainClass: 'mfp-fade'
-		});
 		
-		/*====================================
-			Scroll Up JS
-		======================================*/
-		$.scrollUp({
-			scrollText: '<span><i class="fa fa-angle-up"></i></span>',
-			easingType: 'easeInOutExpo',
-			scrollSpeed: 900,
-			animation: 'fade'
-		});  
+		
+		
 		
 	});
 	
