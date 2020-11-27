@@ -1,6 +1,9 @@
 <?php
     include "views/fixed/head.php";
-    include "views/fixed/header.php";
+	include "views/fixed/header.php";
+	
+	$_SESSION['sesija'] = "Ja napisao";
+	echo $_SESSION['sesija'];
 ?>
 
 <!-- Login page content -->
@@ -36,19 +39,19 @@
 									<div class="col-lg-6 col-md-6 col-12">
 										<div class="form-group">
 											<label>Email<span>*</span></label>
-											<input type="text" name="name" placeholder="" required="required">
+											<input type="email" name="email_nm" id="email">
 										</div>
 									</div>
 									<div class="col-lg-6 col-md-6 col-12">
 										<div class="form-group">
 											<label>Password<span>*</span></label>
-											<input type="password" name="password" placeholder="" required="required">
+											<input type="password" name="pass_nm" id="pass">
 										</div>
 									</div>
 									
 
 									<div class="btn_register">
-										<a href="#" class="btn">Login</a>
+										<input type="button" name="login_nm" id="login" class="btn" value="Login">
 									</div>
 								</div>
 							</form>

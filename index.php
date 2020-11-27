@@ -1,6 +1,7 @@
 <?php
+	//ob_start();
     include "views/fixed/head.php";
-    include "views/fixed/header.php";
+	include "views/fixed/header.php";
 ?>
 
 <!--Index page content-->

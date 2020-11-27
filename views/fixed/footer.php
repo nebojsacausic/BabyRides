@@ -117,5 +117,6 @@
 
 	<!-- My JS -->
 	<script src="js/register.js" type="text/javascript"></script>
+	<script src="js/login.js" type="text/javascript"></script>
 </body>
 </html>

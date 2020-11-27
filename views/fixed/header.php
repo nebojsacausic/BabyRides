@@ -1,3 +1,7 @@
+<?php
+	session_start();
+?>
+
 <body class="js">
 	
 	<!-- Preloader -->
@@ -22,8 +26,8 @@
 						<!-- Top Left -->
 						<div class="top-left">
 							<ul class="list-main">
-								<li><i class="ti-headphone-alt"></i> +060 (800) 801-582</li>
-								<li><i class="ti-email"></i> support@shophub.com</li>
+								<li><i class="ti-headphone-alt"></i> +060 801-582</li>
+								<li><i class="ti-email"></i> support@babyrides.com</li>
 							</ul>
 						</div>
 						<!--/ End Top Left -->
@@ -32,10 +36,20 @@
 						<!-- Top Right -->
 						<div class="right-content">
 							<ul class="list-main">
-								<li><i class="ti-location-pin"></i> Store location</li>
-								<li><i class="ti-alarm-clock"></i> <a href="#">Daily deal</a></li>
-								<li><i class="ti-user"></i> <a href="register.php">Register</a></li>
-								<li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
+								<?php
+									if(isset($_SESSION['users'])){
+								?>
+									<li><i class="ti-user"></i> <?php echo $_SESSION['users']->fName?></li>
+									<li><i class="ti-power-off"></i><a href="logout.php">Logout</a></li>
+								<?php
+									}else{
+								?>
+									<li><i class="ti-user"></i> <a href="register.php">Register</a></li>
+									<li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
+								<?php
+									};
+								?>
+								
 							</ul>
 						</div>
 						<!-- End Top Right -->
@@ -152,13 +166,21 @@
 															<li><a href="checkout.html">Checkout</a></li>
 														</ul>
 													</li>
-													<li><a href="#">Pages</a></li>									
-													<li><a href="#">Blog<i class="ti-angle-down"></i></a>
-														<ul class="dropdown">
-															<li><a href="blog-single-sidebar.html">Blog Single Sidebar</a></li>
-														</ul>
-													</li>
-													<li><a href="contact.html">Contact Us</a></li>
+													<li><a href="#">Pages</a></li>								
+													<li><a href="admin.php">Contact Us</a></li>
+													<?php
+														if(isset($_SESSION['users'])){
+															if($_SESSION['users']->role_id == "1"){
+																?>
+																<li><a href="admin.php">Admin</a></li>
+																<?php
+															}
+															else if($_SESSION['users']->role_id == "2"){
+																var_dump("korisnik");
+															}
+														};
+													?>
+
 												</ul>
 										</div>
 									</div>

@@ -53,7 +53,7 @@ if(isset($_POST['sent'])){
         $result = $statement->execute() ? 201 : 500;
         $message = "Successfully added user!";
 
-        var_dump($result);
+        //var_dump($result);
 
         if($result){
             http_response_code($result);
