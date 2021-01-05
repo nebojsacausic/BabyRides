@@ -231,7 +231,7 @@ big {
 }
 
 .section {
-	padding: 100px 0;
+	padding: 15px 0;
 	position: relative;
 }
 .section-title {
@@ -1874,4 +1874,62 @@ object {
   -webkit-transform-origin:bottom left;
   transform-origin:bottom left
  }
+}
+
+
+/*Moj css*/
+
+#admin_panel{
+    margin: 15px;
+}
+
+#admin_sidebar{
+	width: 300px;
+	margin: 20px;
+	float: left;
+}
+
+#admin_sidebar .admin-btn{
+	display: inline-block;
+    width: 100%;
+    padding: 5px 0px;
+    text-transform: uppercase;
+    background-color: #424646;
+    color: #fff;
+    border: none;
+    text-align: center;
+    font-weight: 600;
+    transition: 0.5s;
+    border-bottom: 2px solid #fff;
+	text-decoration: none;
+	
+}
+
+#admin_sidebar .admin-btn:hover{
+    background-color: #f7941d;
+}
+
+#admin_center{
+	margin: 20px;
+	float: right;
+}
+
+#admin_center .brands_list{
+}
+
+#admin_center th,td{
+	text-align: center;
+}
+
+#admin_center th{
+	background-color: #f7941d;
+	color: #fff;
+}
+
+#admin_center .update_brand{
+	color: #21759b;
+}
+
+#admin_center .delete_brand{
+	color: #21759b;
 }

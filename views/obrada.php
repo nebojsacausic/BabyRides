@@ -62,9 +62,6 @@ if(isset($_POST['sent'])){
         }
 
     }
-    
-
-    
 }
 
 
