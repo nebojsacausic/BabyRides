@@ -1,20 +1,28 @@
 <?php
+    include "connection.php";
 
-include "connection.php";
+    $querry = "select * from categories";
+	$ressult = $connection->query($querry);
+    $resFetch = $ressult->fetchAll();
 
-    //--------------INSERT BRAND-------------------
+    http_response_code(200);
+    header('Content-Type: application/json');
+    echo json_encode($resFetch);
+       
+
+
 
     if(isset($_POST['sent'])){
 
-        $brand = $_POST['brand'];
+        $category = $_POST['category'];
 
         //Regex back
-        $regBrand = "/^[A-Z][a-z]{2,12}(\s[A-Z][a-z]{2,12})?$/";
+        $regCategory = "/^[A-Z][a-z]{2,12}(\s[A-Z][a-z]{2,12})?$/";
 
         $errBack = [];
         //Regex back test
-        if(!preg_match($regBrand, $brand)){
-            $errBack[] = "Invalid brand format!";
+        if(!preg_match($regCategory, $category)){
+            $errBack[] = "Invalid category format!";
         }
 
         //If there are no errors, entering in the database
@@ -23,13 +31,13 @@ include "connection.php";
         }
         else{
 
-            $querry = "insert into brand values(null, :brand)";
+            $querry = "insert into categories values(null, :category)";
             $statement = $connection -> prepare($querry);
-            $statement -> bindParam(":brand", $brand);
+            $statement -> bindParam(":category", $category);
 
 
             $result = $statement->execute() ? 201 : 500;
-            $message = "Successfully added new brand!";
+            $message = "Successfully added new category!";
 
             //var_dump($result);
 
@@ -38,19 +46,17 @@ include "connection.php";
                 header('Content-Type: application/json');
                 echo json_encode(['message' => $message]);
             }
-
         }
-        
     }
 
-    //---------------------Delete brand----------------------------
+    //---------------------Delete categories----------------------------
 
     else if(isset($_POST['idDelete'])){
-        $id_brand = $_POST['idDelete'];
+        $id_category = $_POST['idDelete'];
 
-        $querry = "delete from brand where id_brand = :id_brand";
+        $querry = "delete from categories where id_category = :id_category";
         $statement = $connection -> prepare($querry);
-        $statement -> bindParam(":id_brand", $id_brand);
+        $statement -> bindParam(":id_category", $id_category);
 
 
         $result = $statement->execute() ? 201 : 500;
@@ -60,22 +66,22 @@ include "connection.php";
         if($result){
             http_response_code($result);
             header('Content-Type: application/json');
-            echo "Brand deleted!";
+            echo "Category deleted!";
         }
         else{
-			echo "Brand not found in database";
+			echo "Category not found in database";
 		}
     }
-    //-------------------Update brand---------------------
+
     else if(isset($_POST['sentUpdate'])){
-        $brand = $_POST['brand'];
-        $id_brand = $_POST['id_brand'];
+        $category = $_POST['category'];
+        $id_category = $_POST['id_category'];
         //var_dump($brand, $id_brand);
 
-        $querry = "UPDATE brand SET brand_name=:brand WHERE id_brand = :id_brand";
+        $querry = "UPDATE categories SET category=:category WHERE id_category = :id_category";
         $statement = $connection -> prepare($querry);
-        $statement -> bindParam(":id_brand", $id_brand);
-        $statement -> bindParam(":brand", $brand);
+        $statement -> bindParam(":id_category", $id_category);
+        $statement -> bindParam(":category", $category);
         
         $result = $statement->execute() ? 201 : 500;
         $message = "Successfully update!";

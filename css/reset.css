@@ -635,7 +635,6 @@ input[type="datetime-local"],
 input[type="color"],
 textarea {
 	color: #666;
-	border: 1px solid #ccc;
 	border-radius: 3px;
 	padding: 3px;
 }
@@ -1926,10 +1925,19 @@ object {
 	color: #fff;
 }
 
-#admin_center .update_brand{
+#admin_center .update{
 	color: #21759b;
 }
 
-#admin_center .delete_brand{
+#admin_center .delete{
 	color: #21759b;
+}
+
+#admin_center .update:hover{
+	opacity: 0.7;
+}
+
+
+#admin_center .delete:hover{
+	opacity: 0.7;
 }

@@ -120,5 +120,7 @@
 	<script src="js/login.js" type="text/javascript"></script>
 	<script src="js/brands.js" type="text/javascript"></script>
 	<script src="js/admin.js" type="text/javascript"></script>
+	<script src="js/show_products.js" type="text/javascript"></script>
+	<script src="js/products.js" type="text/javascript"></script>
 </body>
 </html>
