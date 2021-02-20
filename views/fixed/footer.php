@@ -122,5 +122,10 @@
 	<script src="js/admin.js" type="text/javascript"></script>
 	<script src="js/show_products.js" type="text/javascript"></script>
 	<script src="js/products.js" type="text/javascript"></script>
+	<script src="js/regexProducts.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/filter.js" type="text/javascript"></script>
+	<script src="js/regexSlider.js" type="text/javascript"></script>
+	<script src="js/regexProdUpdate.js" type="text/javascript"></script>
 </body>
 </html>

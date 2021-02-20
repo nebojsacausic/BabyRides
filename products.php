@@ -36,12 +36,12 @@
 		<section class="product-area shop-sidebar shop section">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-3 col-md-4 col-12">
+					<div class="col-lg-3 col-md-4 col-12 products_sidebar">
 						<div class="shop-sidebar">
 								<!-- Single Widget -->
 								<div class="single-widget category">
-									<h3 class="title">Categories</h3>
-									<ul class="categor-list">
+									<h3 class="title">Brands</h3>
+									<ul class="categor-list brands_list">
 
 										<?php
 											
@@ -52,7 +52,7 @@
 											$ispis = "";
 
 											foreach($resFetch as $red){
-												$ispis.="<li><a href='#'>".$red->brand_name."</a></li>";
+												$ispis.="<li><a href='#' data-id=".$red->id_brand.">".$red->brand_name."</a></li>";
 											}
 											echo $ispis;
 										?>
@@ -62,14 +62,24 @@
 								<!--/ End Single Widget -->
 								<!-- Single Widget -->
 								<div class="single-widget category">
-									<h3 class="title">Manufacturers</h3>
-									<ul class="categor-list">
-										<li><a href="#">Forever</a></li>
-										<li><a href="#">giordano</a></li>
-										<li><a href="#">abercrombie</a></li>
-										<li><a href="#">ecko united</a></li>
-										<li><a href="#">zara</a></li>
-									</ul>
+									<h3 class="title">Categories</h3>
+										<ul class="categor-list catcat_list">
+
+											<?php
+												
+												$querry = "select * from categories";
+												$ressult = $connection->query($querry);
+												$resFetch = $ressult->fetchAll();
+												//var_dump($resFetch[0]->brand_name);
+												$ispis = "";
+
+												foreach($resFetch as $red){
+													$ispis.="<li><a href='#' data-id=".$red->id_category.">".$red->category."</a></li>";
+												}
+												echo $ispis;
+											?>
+											
+										</ul>
 								</div>
 								<!--/ End Single Widget -->
 

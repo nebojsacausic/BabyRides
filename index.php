@@ -2,6 +2,7 @@
 	//ob_start();
     include "views/fixed/head.php";
 	include "views/fixed/header.php";
+	include "views/connection.php";
 ?>
 
 <!--Index page content-->
@@ -9,25 +10,33 @@
 	<section class="hero-slider">
 		<!-- Single Slider -->
 		<div class="single-slider">
-			<div class="container">
-				<div class="row no-gutters">
-					<div class="col-lg-9 offset-lg-3 col-12">
-						<div class="text-inner">
-							<div class="row">
-								<div class="col-lg-7 col-12">
-									<div class="hero-text">
-										<h1><span>UP TO 50% OFF </span>Shirt For Man</h1>
-										<p>Maboriosam in a nesciung eget magnae <br> dapibus disting tloctio in the find it pereri <br> odiy maboriosm.</p>
-										<div class="button">
-											<a href="#" class="btn">Shop Now!</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+		<section id="aa-slider">
+			<div class="aa-slider-area">
+				<div id="slider">
+					
+				<div class="flexslider">
+				<ul class="slides">
+
+					<?php
+						$query = "SELECT * FROM slider";
+						$ressult = $connection->query($query);
+						$resFetch = $ressult->fetchAll();
+
+						$content = "";
+						foreach($resFetch as $res){
+							$content.="<li data-thumb=pictures/slider/".$res->href.">
+										<img src=pictures/slider/".$res->href." alt=".$res->alt."/>
+										</li>";
+						}
+						echo $content;
+					?>
+				</ul>
+				</div>
+
+					
 				</div>
 			</div>
+		</section>
 		</div>
 		<!--/ End Single Slider -->
 	</section>

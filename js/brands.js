@@ -30,7 +30,7 @@ function brandCheck(){
     if(arrayErr.length == 0){
         console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRides/views/insertBrand.php",
+            url : "/PHP1/BabyRoller/views/insertBrand.php",
             method : "post",
             dataType: "json",
             data : {

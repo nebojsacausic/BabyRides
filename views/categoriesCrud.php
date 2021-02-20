@@ -1,17 +1,6 @@
 <?php
     include "connection.php";
 
-    $querry = "select * from categories";
-	$ressult = $connection->query($querry);
-    $resFetch = $ressult->fetchAll();
-
-    http_response_code(200);
-    header('Content-Type: application/json');
-    echo json_encode($resFetch);
-       
-
-
-
     if(isset($_POST['sent'])){
 
         $category = $_POST['category'];
@@ -31,13 +20,13 @@
         }
         else{
 
-            $querry = "insert into categories values(null, :category)";
+            $querry = "INSERT INTO categories VALUES(null, :category)";
             $statement = $connection -> prepare($querry);
             $statement -> bindParam(":category", $category);
 
 
             $result = $statement->execute() ? 201 : 500;
-            $message = "Successfully added new category!";
+            $message = "You have successfully added a new category!";
 
             //var_dump($result);
 
@@ -54,19 +43,20 @@
     else if(isset($_POST['idDelete'])){
         $id_category = $_POST['idDelete'];
 
-        $querry = "delete from categories where id_category = :id_category";
+        $querry = "DELETE FROM categories WHERE id_category = :id_category";
         $statement = $connection -> prepare($querry);
         $statement -> bindParam(":id_category", $id_category);
 
 
         $result = $statement->execute() ? 201 : 500;
+        $message = "Successfully deleted category!";
 
         //var_dump($result);
 
         if($result){
             http_response_code($result);
             header('Content-Type: application/json');
-            echo "Category deleted!";
+            echo json_encode(['message' => $message]);
         }
         else{
 			echo "Category not found in database";
@@ -84,7 +74,7 @@
         $statement -> bindParam(":category", $category);
         
         $result = $statement->execute() ? 201 : 500;
-        $message = "Successfully update!";
+        $message = "You have successfully changed the category name!";
         //var_dump($result);
 
         if($result){

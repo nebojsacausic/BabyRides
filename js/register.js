@@ -76,7 +76,7 @@ function registerCheck(){
     if(arrayErr.length == 0){
         console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRides/views/obrada.php",
+            url : "/PHP1/BabyRoller/views/obrada.php",
             method : "post",
             dataType: "json",
             data : {

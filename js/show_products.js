@@ -1,7 +1,7 @@
 $(document).ready(function() {
     
     $.ajax({
-		url: "/PHP1/BabyRides/views/productsCrud.php",
+		url: "/PHP1/BabyRoller/views/getProducts.php",
 		method: "post",
 		dateType: "json",
 		data: {
@@ -29,7 +29,7 @@ function productsPrint(products){
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="product-details.html">
-                                    <img class="default-img" src="/PHP1/BabyRides/pictures/${p.href}" alt="${p.alt}">
+                                    <img class="default-img" src="/PHP1/BabyRoller/pictures/${p.href}" alt="${p.alt}">
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action">

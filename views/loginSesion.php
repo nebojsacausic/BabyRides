@@ -31,7 +31,7 @@ if(isset($_POST['sent'])){
             $statement -> bindParam(":email", $email);
             $statement -> bindParam(":pass", $pass);
             $result = $statement->execute();
-            $message = "Successfully added user!";
+            $message = "Successfull login!";
             //var_dump($statement);
             //var_dump($result);
 

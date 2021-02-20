@@ -48,19 +48,20 @@ include "connection.php";
     else if(isset($_POST['idDelete'])){
         $id_brand = $_POST['idDelete'];
 
-        $querry = "delete from brand where id_brand = :id_brand";
+        $querry = "DELETE FROM brand WHERE id_brand = :id_brand";
         $statement = $connection -> prepare($querry);
         $statement -> bindParam(":id_brand", $id_brand);
 
 
         $result = $statement->execute() ? 201 : 500;
+        $message = "Successfully deleted brand!";
 
         //var_dump($result);
 
         if($result){
             http_response_code($result);
             header('Content-Type: application/json');
-            echo "Brand deleted!";
+            echo json_encode(['message' => $message]);
         }
         else{
 			echo "Brand not found in database";
@@ -78,7 +79,7 @@ include "connection.php";
         $statement -> bindParam(":brand", $brand);
         
         $result = $statement->execute() ? 201 : 500;
-        $message = "Successfully update!";
+        $message = "You have successfully changed the brand name!";
         //var_dump($result);
 
         if($result){

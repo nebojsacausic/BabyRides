@@ -27,7 +27,7 @@
 						<div class="top-left">
 							<ul class="list-main">
 								<li><i class="ti-headphone-alt"></i> +060 801-582</li>
-								<li><i class="ti-email"></i> support@babyrides.com</li>
+								<li><i class="ti-email"></i> support@babyroller.com</li>
 							</ul>
 						</div>
 						<!--/ End Top Left -->

@@ -286,7 +286,7 @@ big {
 .breadcrumbs {
 	background-color: #F6F7FB;
 	position: relative;
-	padding: 30px 0px;
+	padding: 15px 0px;
 }
 .breadcrumbs .bread-inner {
 	z-index: 22;
@@ -1879,13 +1879,14 @@ object {
 /*Moj css*/
 
 #admin_panel{
-    margin: 15px;
+	margin: 15px;
+	display: flex;
+    width: 100%;
 }
 
 #admin_sidebar{
 	width: 300px;
 	margin: 20px;
-	float: left;
 }
 
 #admin_sidebar .admin-btn{
@@ -1908,9 +1909,9 @@ object {
     background-color: #f7941d;
 }
 
-#admin_center{
+
+#admin_right{
 	margin: 20px;
-	float: right;
 }
 
 #admin_center .brands_list{

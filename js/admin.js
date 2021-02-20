@@ -3,6 +3,8 @@ $(document).ready(function() {
     $("#brand_btn").click(brandAjax);
     $("#cat_btn").click(categoryAjax);
     $("#add_product").click(addProduct);
+    $("#products_btn").click(productsAjax);
+    $("#slider_pic_btn").click(sliderAjax);
 });
 
 //----------------------SENDING REQUESTS-------------------------
@@ -27,11 +29,107 @@ function brandAjax(){
     });
 }
 
+//Slider request
+function sliderAjax(){
+
+    $.ajax({
+		url: "views/slider.php",
+		method: "post",
+        dateType: "json",
+		success: function(data, textStatus, xhr){
+            console.log(data);
+            sliderContent(data);
+		},
+		error: function (err) {
+			console.log(err);
+		}
+    });
+}
+
+function sliderContent(data){
+    var content = "";
+    var br = 1;
+    content += `
+    <div class="slider_pics">
+    <h3 style="text-align:center;">Slider pictures</h3></br>
+    <div class="slider_list">
+
+        <table cellpadding='2'>
+            <tr>
+                <th>N</th>
+                <th>Picture</th>
+                <th>Delete</th>						
+            </tr>`;
+        
+            data.forEach(function(p) {
+                content += `<tr>
+                                <td>${br++}</td>
+                                <td><img src="pictures/slider/${p.href}" alt="${p.alt}"/></td>
+                                <td><a href='#' class='delete' data-id='${p.id_slider}'>Delete</a></td>
+                            </tr>`;
+            });
+            
+
+
+
+        content += `</table>
+    </div>
+    </div>
+            <div id="center_right">
+                <div class="slider_center_right">
+                <form class="form" method="post" action="views/sliderCrud.php" onsubmit="return regexSlider()" enctype="multipart/form-data">
+                    <div class="admin_row">
+                        <div class="col_admin_row">
+							<div class="form-group">
+								<h5>Add slider pics</h5>
+								<input type="file" name="slider_pic_nm" id="slicer_pic_id">
+							</div>
+                        </div>
+                    </div>
+							
+						<div class="btn_register">
+							<input type="submit" name="slider_pic_btn" id="add_slider_pic" class="btn" value="ADD">
+						</div>
+                </form>
+                </div>
+            </div>`;
+
+    $("#admin_center").html(content);
+
+    //Delete slider item
+    $(".delete").click(deleteSlider);
+}
+
+
+function deleteSlider(){
+    var idDelete = $(this).data("id");
+    console.log(idDelete);
+
+    $.ajax({
+        url: "/PHP1/BabyRoller/views/sliderCrud.php",
+        method: "post",
+        dateType: "json",
+        data: {
+            idDelete: idDelete		
+        },
+        success: function(data){
+            // console.log(data)
+            sliderAjax();
+        },
+        error: function (x,z,y) {
+            console.log(x,z,y);
+        }
+    })
+}
+
+
+
+
 //Categories request
 function categoryAjax(){
     console.log("oooo")
     $.ajax({
-		url: "/PHP1/BabyRides/views/categoriesCrud.php",
+		url: "/PHP1/BabyRoller/categories.php",
 		method: "post",
 		dateType: "json",
 		data: {
@@ -48,70 +146,307 @@ function categoryAjax(){
     });
 }
 
+function productsAjax(){
+    
+    $.ajax({
+		url: "views/getProducts.php",
+		method: "post",
+		dateType: "json",
+		success: function(data, textStatus, xhr){
+			console.log(data);
+            //console.log(xhr.status)
+            listProducts(data);
+		},
+		error: function (err) {
+			console.log(err);
+		}
+    });
+}
+
+
+function listProducts(data){
+    var content = "";
+    content += `
+    
+    <div class="product_list">
+        <h3 style="text-align:center;">Products</h3>
+
+        <table cellpadding='2'>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Active</th>
+                <th>Update</th>
+                <th>Delete</th>						
+            </tr>
+    `;
+    data.forEach(function(p) {
+        content += `<tr>
+                    <td>${p.id_product}</td>
+                    <td class='naziv'>${p.product_name}</td>
+                    <td class='brand'>${p.brand_name}</td>
+                    <td class='cat'>${p.category}</td>
+                    <td class='act'>${p.active}</td>
+                    <td><a href='#' class='update' data-id='${p.id_product}'>Update</a></td>
+                    <td><a href='#' class='delete' data-id='${p.id_product}'>Delete</a></td>
+                    </tr>`;
+        });	
+
+    content +=    
+        ` </table>
+            </div>`;
+
+    $("#admin_center").html(content);
+    $(".delete").click(deleteProduct);
+    $(".update").click(updateProduct);
+}
+//---------------UPDATE PRODUCT--------------------
+
+
+function updateProduct(){
+    var idUpdate = $(this).data("id");
+    console.log(idUpdate);
+
+    $.ajax({
+        url : "/PHP1/BabyRoller/views/productsCrud.php",
+        method : "post",
+        dataType: "json",
+        data : {
+            idUpdate : idUpdate,
+            sentUpdate : true
+        },
+        success : function(prod){
+            //console.log(prod);
+            listUpdateProduct(prod);
+            productsUpdateBrand(prod.id_brand);
+            productsUpdateCategories(prod.id_category);
+            console.log(prod.id_brand)
+        },
+        error : function(xhr, status, errorMsg){
+            console.log("Nesto nije ok sa serverom");
+        }
+    });
+}
+
+function productsUpdateBrand(brandId){
+    $.ajax({
+        url: "brands.php",
+        method: "post",
+        dateType: "json",
+        data: {
+            brand: "brand",
+        },
+        success: function(brands, textStatus, xhr){
+            console.log(brands);
+            console.log(xhr.status)
+            dropdownBrands(brands, brandId);
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+}
+
+function productsUpdateCategories(catId){
+    $.ajax({
+		url: "/PHP1/BabyRoller/categories.php",
+		method: "post",
+		dateType: "json",
+		data: {
+			category: "category"
+		},
+		success: function(categories, textStatus, xhr){
+			//console.log(data);
+            console.log(xhr.status)
+            dropdownCat(categories, catId);
+		},
+		error: function (err) {
+			console.log(err);
+		}
+    });
+}
 
 
 
 
+
+
+function listUpdateProduct(data){
+    console.log(data);
+    var content = "";
+
+    content += 
+    `<div class='add_new_prod'><h3 style="text-align:center;">Update product</h3>
+        <form class="form" method="post" action="views/productsCrud.php" id="myForm" onsubmit="return regexProdUpdate()" enctype="multipart/form-data">
+            <input type="hidden" name="finalUpdateId" value="${data.id_product}">
+            <div class='form_item'>
+                <label>Title: <span>*</span></label></br>
+                <input type="text" id="add_item_title" name="add_item_nm" class="ele_forme_input" value="${data.product_name}">
+            </div>
+            <div class='form_item'>
+                <label>Price: <span>*</span></label></br>
+                <input type="number" id="add_item_price" name="item_price_nm" class="ele_forme_input" value="${data.price}">
+            </div>
+
+            <div class="add_item_dropdown" id="add_item_category">
+            </div>
+
+
+            <div class="add_item_dropdown" id="add_item_brand">
+            </div>
+
+            <div class="add_item_active" id='add_active_id'>
+                <table cellpadding='2'>
+                    <tr>
+                        <td>Active:</td>
+                        <td>Not active:</td>						
+                    </tr>
+                    <tr>
+                        <td><input type="radio" value="1" name="active_nm" class="" checked="checked"></td>
+                        <td><input type="radio" value="0" name="active_nm" class=""></td>						
+                    </tr>
+                </table>
+            </div>
+
+            <div class='form_item'>
+                <label>Description: <span>*</span></label></br>
+                <textarea name="item_description" class="ele_forme_input" id="add_item_description">${data.description}</textarea>
+            </div>
+
+            <div class='form_item_pic'>
+                <label>Picture:</label></br>
+                <img src="pictures/${data.href}" alt="${data.alt}"/>
+                <input type="file" name="update_pic_nm" id="update_add_pic" class="add_item_pic">
+            </div>
+
+            <div class='form_item'>
+                <div class="btn_add_item">
+                    <input type="submit" name="update_item_btn" id="update_item_button" class="btn" value="Update">
+                </div>
+            </div>
+        </form>
+    </div>`;
+
+    $("#admin_center").html(content);
+
+    //var strUser = e.val(data.id_brand);
+    //var opt = e.options[e.selectedIndex];
+    //e.val(data.id_brand);
+    //console.log(strUser);
+
+
+
+    //Ajax request for brands dropdown
+    // $.ajax({
+	// 	url: "brands.php",
+	// 	method: "post",
+	// 	dateType: "json",
+	// 	data: {
+	// 		brand: "brand",
+	// 	},
+	// 	success: function(data, textStatus, xhr){
+	// 		//console.log(data);
+    //         console.log(xhr.status)
+    //         dropdownBrands(data);
+	// 	},
+	// 	error: function (err) {
+	// 		console.log(err);
+	// 	}
+    // });
+    
+    //Ajax request for category dropdown
+    
+
+    
+}
+
+
+
+
+
+
+
+
+function deleteProduct(){
+    var idDelete = $(this).data("id");
+        console.log(idDelete)
+
+        $.ajax({
+            url: "/PHP1/BabyRoller/views/productsCrud.php",
+            method: "post",
+            dateType: "json",
+            data: {
+                idDelete: idDelete		
+            },
+            success: function(data){
+                alert(data.message);
+                productsAjax(data);
+            },
+            error: function (x,z,y) {
+                console.log(x,z,y);
+            }
+        })
+}
 
 
 function addProduct(){
     var content = "";
 
     content += 
-    `<h3 style="text-align:center;">Add new item</h3></br>
-    <form class="form" method="post" action="#">
-		<div class='form_item'>
-            <label>Title: <span>*</span></label></br>
-		    <input type="text" id="add_item_title" name="add_item_nm" class="ele_forme_input">
-        </div>
-        <div class='form_item'>
-            <label>Price: <span>*</span></label></br>
-		    <input type="number" id="add_item_price" name="add_item_price" class="ele_forme_input">
-        </div>
-
-        <div class="add_item_dropdown" id="add_item_category">;
-        </div>
-
-
-        <div class="add_item_dropdown" id="add_item_brand">
-        </div>
-
-        <div class="add_item_active" id='add_active_id'>
-            <table cellpadding='2'>
-                <tr>
-                    <td>Active:</td>
-                    <td>Not active:</td>						
-                </tr>
-                <tr>
-                    <td><input type="radio" value="1" name="add_item_nm" class="" checked="checked"></td>
-                    <td><input type="radio" value="0" name="add_item_nm" class=""></td>						
-                </tr>
-            </table>
-        </div>
-
-        <div class='form_item'>
-            <label>Description: <span>*</span></label></br>
-		    <textarea name="add_item_nm" class="ele_forme_input" id="add_item_description"> </textarea>
-        </div>
-
-        <div class='form_item_pic'>
-            <label>Picture:</label></br>
-            <input type="file" name="pic_nm" id="add_pic" class="add_item_pic">
-        </div>
-
-        <div class='form_item'>
-            <div class="btn_add_item">
-                <input type="button" name="add_item_btn" id="add_item_button" class="btn" value="Confirm">
+    `<div class='add_new_prod'><h3 style="text-align:center;">Add new item</h3>
+        <form class="form" method="post" action="views/productsCrud.php" id="myForm" onsubmit="return regexProducts()" enctype="multipart/form-data">
+            <div class='form_item'>
+                <label>Title: <span>*</span></label></br>
+                <input type="text" id="add_item_title" name="add_item_nm" class="ele_forme_input">
             </div>
-        </div>
+            <div class='form_item'>
+                <label>Price: <span>*</span></label></br>
+                <input type="number" id="add_item_price" name="item_price_nm" class="ele_forme_input">
+            </div>
 
-        
-    
-	</form>`;
+            <div class="add_item_dropdown" id="add_item_category">;
+            </div>
+
+
+            <div class="add_item_dropdown" id="add_item_brand">
+            </div>
+
+            <div class="add_item_active" id='add_active_id'>
+                <table cellpadding='2'>
+                    <tr>
+                        <td>Active:</td>
+                        <td>Not active:</td>						
+                    </tr>
+                    <tr>
+                        <td><input type="radio" value="1" name="active_nm" class="" checked="checked"></td>
+                        <td><input type="radio" value="0" name="active_nm" class=""></td>						
+                    </tr>
+                </table>
+            </div>
+
+            <div class='form_item'>
+                <label>Description: <span>*</span></label></br>
+                <textarea name="item_description" class="ele_forme_input" id="add_item_description"> </textarea>
+            </div>
+
+            <div class='form_item_pic'>
+                <label>Picture:</label></br>
+                <input type="file" name="pic_nm" id="add_pic" class="add_item_pic">
+            </div>
+
+            <div class='form_item'>
+                <div class="btn_add_item">
+                    <input type="submit" name="add_item_btn" id="add_item_button" class="btn" value="Confirm">
+                </div>
+            </div>
+        </form>
+    </div>`;
 
     $("#admin_center").html(content);
 
-    $("#add_item_button").click(productsCheck);
+    //$("#add_item_button").click(productsCheck);
 
 
     //Ajax request for brands dropdown
@@ -134,7 +469,7 @@ function addProduct(){
     
     //Ajax request for category dropdown
     $.ajax({
-		url: "/PHP1/BabyRides/views/categoriesCrud.php",
+		url: "/PHP1/BabyRoller/categories.php",
 		method: "post",
 		dateType: "json",
 		data: {
@@ -149,28 +484,39 @@ function addProduct(){
 			console.log(err);
 		}
     });
-    
+
 }
 
-function dropdownBrands(data){
+function dropdownBrands(brands, brandId){
     var content = `<label>Brands: <span>*</span></label></br>
-    <select class="ele_forme_input"><option value='0'></option>`;
+    <select class="ele_forme_input" name="brands_nm" id="brand_dropdown_id"><option value='0'></option>`;
 
-    data.forEach( function(p) {
-    content += `<option value='${p.id_brand}'>${p.brand_name}</option>`;
+    brands.forEach( function(b) {
+        if(b.id_brand == brandId){
+            content += `<option value='${b.id_brand}' selected>${b.brand_name}</option>`;
+        }
+        else{
+            content += `<option value='${b.id_brand}'>${b.brand_name}</option>`;
+        }
+    
     });
     content += `</select>`;
 
     $("#add_item_brand").html(content);
 }
 
-
-function dropdownCat(data){
+function dropdownCat(categories, catId){
     var content = `<label>Categories: <span>*</span></label></br>
-    <select class="ele_forme_input"><option value='0'></option>`;
+    <select class="ele_forme_input" name="categories_nm"><option value='0'></option>`;
 
-    data.forEach( function(p) {
-    content += `<option value='${p.id_category}'>${p.category}</option>`;
+    categories.forEach( function(c) {
+        //console.log(c.id_category)
+        if(c.id_category == catId){
+            content += `<option value='${c.id_category}' selected>${c.category}</option>`;
+        }
+        else{
+            content += `<option value='${c.id_category}'>${c.category}</option>`;
+        }
     });
     content += `</select>`;
 
@@ -184,26 +530,27 @@ function dropdownCat(data){
 
 
 
-
 //---------- CATEGORIES---------------
 
 function admin_category(data){
     var content = "";
+    var br = 1;
     content += `
-    <h3 style="text-align:center;">Categories</h3></br>
-    <div class="categories_list">
+    <div id="center_left">
+        <h3 style="text-align:center;">Categories</h3></br>
+        <div class="categories_list">
 
-        <table cellpadding='2'>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Update</th>
-                <th>Delete</th>						
-            </tr>
-    `;
+            <table cellpadding='2'>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Update</th>
+                    <th>Delete</th>						
+                </tr>
+        `;
     data.forEach(function(p) {
         content += `<tr>
-                    <td>${p.id_category}</td>
+                    <td>${br++}</td>
                     <td class='naziv'>${p.category}</td>
                     <td><a href='#' class='update' data-id='${p.id_category}'>Update</a></td>
                     <td><a href='#' class='delete' data-id='${p.id_category}'>Delete</a></td>
@@ -212,98 +559,38 @@ function admin_category(data){
 
     content +=    
         ` </table>
-            </div> 
+        </div> 
+    </div>
+            <div id="center_right">
                 <form class="form" method="post" action="#">
-					<div class="row">
-						<div class="col-lg-6 col-md-6 col-12">
+                    <div class="admin_row">
+                        <div class="col_admin_row">
 							<div class="form-group">
-								<label>Brand name: </label>
+								<h5>Add new category </h5>
 								<input type="text" name="category_nm" id="category">
 							</div>
-					    </div>
+                        </div>
+                    </div>
 							
 						<div class="btn_register">
 							<input type="button" name="category_btn_nm" id="category_add" class="btn" value="ADD">
 						</div>
-					</div>
-				</form>`;
+                </form>
+                <div id="right_update"></div>
+            </div>`;
 
     $("#admin_center").html(content);
     $("#category_add").click(categoryCheck);
 
     
     //------------------DELETE CATEGORIES--------------------
-    $(".delete").click(function () {
-        var idDelete = $(this).data("id");
-        console.log(idDelete)
-
-        $.ajax({
-            url: "/PHP1/BabyRides/views/categoriesCrud.php",
-            method: "post",
-            dateType: "json",
-            data: {
-                idDelete: idDelete		
-            },
-            success: function(data){
-                // console.log(data)
-                console.log(data);
-            },
-            error: function (x,z,y) {
-                console.log(x,z,y);
-            }
-        })
-    })
+    $(".delete").click(deleteCategory);
 
     //-------------------UPDATE CATEGORIES-----------------
     
-    $(".update").click(function () {
-        var idUpdate = $(this).data("id");
-        var category = $(this).parent().parent().find("td.naziv").text();
-
-        content += `<form class="form" method="post" action="#">
-                        <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>New brand name: </label>
-                                        <input type="text" name="update_category_nm" id="update_category">
-                                    </div>
-                                </div>
-                                
-                                <div class="btn_register">
-                                    <input type="button" name="category_btn_nm" id="category_update_btn" class="btn" value="UPDATE">
-                                </div>
-                        </div>
-                    </form>`;
-        
-    $("#admin_center").html(content);
-    $("#update_category").val(category);
-
-    $("#category_update_btn").click(function(){
-        var entry_category = $("#update_category").val();
-        console.log(entry_category);
-        console.log(idUpdate);
-
-        $.ajax({
-            url : "/PHP1/BabyRides/views/categoriesCrud.php",
-            method : "post",
-            dataType: "json",
-            data : {
-                category : entry_category,
-                id_category : idUpdate,
-                sentUpdate : true
-            },
-            success : function(data){
-                console.log("Sve ok sa serverom");
-                console.log(data);
-            },
-            error : function(xhr, status, errorMsg){
-                console.log("Nesto nije ok sa serverom");
-            }
-        });
-    })
-    })
+    $(".update").click(updateCategories);
 };
-//Regular expression on brands adding
+//Regular expression on categories adding
 function categoryCheck(){
     console.log("dodajj");
     var entry_category = $("#category").val();
@@ -328,7 +615,7 @@ function categoryCheck(){
     if(arrayErr.length == 0){
         console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRides/views/categoriesCrud.php",
+            url : "/PHP1/BabyRoller/views/categoriesCrud.php",
             method : "post",
             dataType: "json",
             data : {
@@ -336,8 +623,8 @@ function categoryCheck(){
                 sent : true
             },
             success : function(data){
-                console.log("Sve ok sa serverom");
-                console.log(data);
+                alert(data.message);
+                categoryAjax(data);
             },
             error : function(xhr, status, errorMsg){
                 console.log("Nesto nije ok sa serverom");
@@ -352,6 +639,73 @@ function categoryCheck(){
 }
 
 
+function deleteCategory(){
+    var idDelete = $(this).data("id");
+    console.log(idDelete)
+
+    $.ajax({
+        url: "/PHP1/BabyRoller/views/categoriesCrud.php",
+        method: "post",
+        dateType: "json",
+        data: {
+            idDelete: idDelete		
+        },
+        success: function(data){
+            alert(data.message);
+            categoryAjax(data);
+        },
+        error: function (x,z,y) {
+            console.log(x,z,y);
+        }
+    })
+}
+
+function updateCategories(){
+    var idUpdate = $(this).data("id");
+    var category = $(this).parent().parent().find("td.naziv").text();
+
+    contentUpdate = `<form class="form" method="post" action="#">
+                            <div class="admin_row">
+                                <div class="col_admin_row">
+                                    <div class="form-group">
+                                        <h5>New category name</h5>
+                                        <input type="text" name="update_category_nm" id="update_category">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btn_register">
+                                <input type="button" name="category_btn_nm" id="category_update_btn" class="btn" value="UPDATE">
+                            </div>
+                        </form>`;
+    
+    $("#right_update").html(contentUpdate);
+    $("#update_category").val(category);
+
+    $("#category_update_btn").click(function(){
+        var entry_category = $("#update_category").val();
+        console.log(entry_category);
+        console.log(idUpdate);
+
+        $.ajax({
+            url : "/PHP1/BabyRoller/views/categoriesCrud.php",
+            method : "post",
+            dataType: "json",
+            data : {
+                category : entry_category,
+                id_category : idUpdate,
+                sentUpdate : true
+            },
+            success : function(data){
+                alert(data.message);
+                categoryAjax(data);
+            },
+            error : function(xhr, status, errorMsg){
+                console.log("Nesto nije ok sa serverom");
+            }
+        });
+    })
+}
 
 
 
@@ -359,119 +713,58 @@ function categoryCheck(){
 
 function admin_brand(data){
     var content = "";
+    var br = 1;
     content += `
-    <h3 style="text-align:center;">Brands</h3></br>
-    <div class="brands_list">
+    <div id="center_left">
+        <h3 style="text-align:center;">Brands</h3></br>
+        <div class="brands_list">
 
-        <table cellpadding='2'>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Update</th>
-                <th>Delete</th>						
-            </tr>
-    `;
+            <table cellpadding='2'>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Update</th>
+                    <th>Delete</th>						
+                </tr>
+        `;
+
+    
+
     data.forEach(function(p) {
         content += `<tr>
-                    <td>${p.id_brand}</td>
+                    <td>${br++}</td>
                     <td class='naziv'>${p.brand_name}</td>
                     <td><a href='#' class='update' data-id='${p.id_brand}'>Update</a></td>
                     <td><a href='#' class='delete' data-id='${p.id_brand}'>Delete</a></td>
                     </tr>`;
         });	
-
     content +=    
-        ` </table>
-            </div> 
-                <form class="form" method="post" action="#">
-					<div class="row">
-						<div class="col-lg-6 col-md-6 col-12">
-							<div class="form-group">
-								<label>Brand name: </label>
-								<input type="text" name="brand_nm" id="brand">
-							</div>
-					    </div>
-							
-						<div class="btn_register">
-							<input type="button" name="brand_btn_nm" id="brand_add" class="btn" value="ADD">
-						</div>
-					</div>
-				</form>`;
+        `       </table>
+            </div>
+        </div>
+        
+        <div id="center_right">
+            <form class="form" method="post" action="#">
+                <div class="admin_row">
+                    <div class="col_admin_row">
+                        <div class="form-group">
+                            <h5>Add new brand</h5>
+                            <input type="text" name="brand_nm" id="brand">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn_register">
+                    <input type="button" name="brand_btn_nm" id="brand_add" class="btn" value="ADD">
+                </div>
+            </form>
+            <div id="right_update"></div>
+        </div>`;
 
     $("#admin_center").html(content);
     $("#brand_add").click(brandCheck);
-
-
-    //------------------DELETE BRAND--------------------
-    $(".delete").click(function () {
-        var idDelete = $(this).data("id");
-        console.log(idDelete)
-
-        $.ajax({
-            url: "/PHP1/BabyRides/views/brandCrud.php",
-            method: "post",
-            dateType: "json",
-            data: {
-                idDelete: idDelete		
-            },
-            success: function(data){
-                // console.log(data)
-                console.log(data);
-            },
-            error: function (x,z,y) {
-                console.log(x,z,y);
-            }
-        })
-    })
-
-    //-------------------UPDATE BRAND-----------------
-    
-    $(".update").click(function () {
-        var idUpdate = $(this).data("id");
-        var brand = $(this).parent().parent().find("td.naziv").text();
-
-        content += `<form class="form" method="post" action="#">
-                        <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>New brand name: </label>
-                                        <input type="text" name="update_brand_nm" id="update_brand">
-                                    </div>
-                                </div>
-                                
-                                <div class="btn_register">
-                                    <input type="button" name="brand_btn_nm" id="brand_update_btn" class="btn" value="UPDATE">
-                                </div>
-                        </div>
-                    </form>`;
-        
-    $("#admin_center").html(content);
-    $("#update_brand").val(brand);
-
-    $("#brand_update_btn").click(function(){
-        var entry_brand = $("#update_brand").val();
-        console.log(entry_brand);
-        console.log(idUpdate);
-
-        $.ajax({
-            url : "/PHP1/BabyRides/views/brandCrud.php",
-            method : "post",
-            dataType: "json",
-            data : {
-                brand : entry_brand,
-                id_brand : idUpdate,
-                sentUpdate : true
-            },
-            success : function(data){
-                console.log("Sve ok sa serverom");
-                console.log(data);
-            },
-            error : function(xhr, status, errorMsg){
-                console.log("Nesto nije ok sa serverom");
-            }
-        });
-    })
-    })
+    $(".delete").click(deleteBrand);
+    $(".update").click(updateBrand);
 
     
 };
@@ -499,7 +792,7 @@ function brandCheck(){
     if(arrayErr.length == 0){
         console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRides/views/brandCrud.php",
+            url : "/PHP1/BabyRoller/views/brandCrud.php",
             method : "post",
             dataType: "json",
             data : {
@@ -507,8 +800,8 @@ function brandCheck(){
                 sent : true
             },
             success : function(data){
-                console.log("Sve ok sa serverom");
-                console.log(data);
+                alert(data.message);
+                brandAjax(data);
             },
             error : function(xhr, status, errorMsg){
                 console.log("Nesto nije ok sa serverom");
@@ -522,127 +815,74 @@ function brandCheck(){
     }
 }
 
+//------------------DELETE BRAND--------------------
+function deleteBrand(){
+    var idDelete = $(this).data("id");
+        console.log(idDelete)
 
-//----------PRODUCTS-------------
-
-function productsCheck(){
-    //regex new product
-    var entry_title = $("#add_item_title").val();
-    var entry_price = $("#add_item_price").val();
-    var entry_category = $("#add_item_category > select > option:checked").val();
-    var entry_brand = $("#add_item_brand > select > option:checked").val();
-    var entry_active = $("#add_active_id input[name=add_item_nm]:checked").val();
-    var entry_description = $("#add_item_description").val();
-    var entry_picture = $(".form_item_pic input:file").val();
-    //entry_pictures.push($(".add_item_pic").val())
-    var splitPic = entry_picture.split("\\");
-    var picture = splitPic[splitPic.length - 1];
-    
-    //var pic_nm = $("#add_pic");
-    //console.log(pic_nm);
-
-
-    var regTitle = /^([A-Z][a-z]{2,24})+$/;
-    var regPrice = /^[1-9][0-9]*$/;
-
-
-    var arrayErr = [];
-    //Regex front test
-    if(!regTitle.test(entry_title)){
-        //console.log("ne valja");
-        $("#add_item_title").css({"border": "1px solid red"});
-        arrayErr.push("Invalid format of title!");
-    }
-    else{
-        //console.log("valja");
-        $("#add_item_title").css({"border": "none"});
-    }
-
-    if(!regPrice.test(entry_price)){
-        //console.log("ne valja");
-        $("#add_item_price").css({"border": "1px solid red"});
-        arrayErr.push("Invalid price format!");
-    }
-    else{
-        //console.log("valja");
-        $("#add_item_price").css({"border": "none"});
-    }
-
-    if(entry_category == ""){
-        //console.log("ne valja kat");
-        $("#add_item_category select").css({"border": "1px solid red"});
-        arrayErr.push("Invalid category!");
-    }
-    else{
-        //console.log("valja kat");
-        $("#add_item_category select").css({"border": "none"});
-    }
-
-    if(entry_brand == ""){
-        //console.log("ne valja brend");
-        $("#add_item_brand select").css({"border": "1px solid red"});
-        arrayErr.push("Invalid brand!");
-    }
-    else{
-        //console.log("valja kat");
-        $("#add_item_brand select").css({"border": "none"});
-    }
-
-    if(entry_description == " "){
-        //console.log("ne valja brend");
-        $("#add_item_description").css({"border": "1px solid red"});
-        arrayErr.push("Invalid description!");
-    }
-    else{
-        //console.log("valja kat");
-        $("#add_item_description").css({"border": "none"});
-    }
-
-    if(picture == ""){
-        //console.log("ne valja brend");
-        $("#add_pic").css({"border": "1px solid red"});
-        arrayErr.push("Invalid brand!");
-    }
-    else{
-        //console.log("valja kat");
-        $("#add_pic").css({"border": "none"});
-    }
-
-
-
-
-
-
-
-    
-    if(arrayErr.length == 0){
-        console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRides/views/productsCrud.php",
+            url: "/PHP1/BabyRoller/views/brandCrud.php",
+            method: "post",
+            dateType: "json",
+            data: {
+                idDelete: idDelete		
+            },
+            success: function(data){
+                alert(data.message);
+                brandAjax(data);
+            },
+            error: function (x,z,y) {
+                console.log(x,z,y);
+            }
+        })
+}
+
+//-------------------UPDATE BRAND-----------------
+
+function updateBrand(){
+    var idUpdate = $(this).data("id");
+        var brand = $(this).parent().parent().find("td.naziv").text();
+
+        contentUpdate = `<form class="form" method="post" action="#">
+                                <div class="admin_row">
+                                    <div class="col_admin_row">
+                                        <div class="form-group">
+                                            <h5>New brand name</h5>
+                                            <input type="text" name="update_brand_nm" id="update_brand">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="btn_register">
+                                <input type="button" name="brand_btn_nm" id="brand_update_btn" class="btn" value="UPDATE">
+                                </div>
+                            </form>`;
+        
+    $("#right_update").html(contentUpdate);
+    $("#update_brand").val(brand);
+
+    $("#brand_update_btn").click(function(){
+        var entry_brand = $("#update_brand").val();
+        console.log(entry_brand);
+        console.log(idUpdate);
+
+        $.ajax({
+            url : "/PHP1/BabyRoller/views/brandCrud.php",
             method : "post",
             dataType: "json",
             data : {
-                title : entry_title,
-                price : entry_price,
-                category : entry_category,
                 brand : entry_brand,
-                active : entry_active,
-                description : entry_description,
-                picture : picture,
-                sent : true
+                id_brand : idUpdate,
+                sentUpdate : true
             },
             success : function(data){
-                console.log("Sve ok sa serverom");
-                console.log(data);
+                alert(data.message);
+                brandAjax(data);
             },
             error : function(xhr, status, errorMsg){
                 console.log("Nesto nije ok sa serverom");
             }
         });
-    }
-    else{
-        for(var i=0; i<arrayErr.length;i++){
-            console.log(arrayErr[i]);
-        };
-    }
+    })
 }
+
