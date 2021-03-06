@@ -1754,6 +1754,7 @@ Version:1.0
 }
 .single-product .product-img a img {
   width: 100%;
+  max-height: 266.5px;
 }
 .single-product .product-img a img.hover-img {
   position: absolute;
@@ -5076,4 +5077,8 @@ Version:1.0
 #center_right .slider_center_right{
 	width: 70%;
     margin: auto;
+}
+
+.active_nav{
+	background-color: #F7941D !important;
 }

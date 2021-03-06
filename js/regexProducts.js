@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    
-    //$("#add_item_button").submit(provjera);
 
     regexProducts();
    

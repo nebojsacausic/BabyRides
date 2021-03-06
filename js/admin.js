@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	
+    brandAjax();
     $("#brand_btn").click(brandAjax);
     $("#cat_btn").click(categoryAjax);
     $("#add_product").click(addProduct);

@@ -84,7 +84,7 @@ if(isset($_POST['add_item_btn'])){
     
         if($result){
 
-            $querry2 = "INSERT INTO pictures VALUES(null, :href, :alt, 1, :id_product)";
+            $querry2 = "INSERT INTO pictures VALUES(null, :href, :alt, :id_product)";
             $statement2 = $connection -> prepare($querry2);
             $statement2 -> bindParam(":href", $timeName);
             $statement2 -> bindParam(":alt", $alt);

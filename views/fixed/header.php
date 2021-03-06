@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	include "C:/xampp/htdocs/PHP1/BabyRoller/views/connection.php";
 ?>
 
 <body class="js">
@@ -95,43 +96,16 @@
 					<div class="col-lg-2 col-md-3 col-12">
 						<div class="right-bar">
 							<!-- Search Form -->
-							<div class="sinlge-bar">
-								<a href="#" class="single-icon"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-							</div>
-							<div class="sinlge-bar">
-								<a href="#" class="single-icon"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
-							</div>
 							<div class="sinlge-bar shopping">
-								<a href="#" class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
-								<!-- Shopping Item -->
-								<div class="shopping-item">
-									<div class="dropdown-cart-header">
-										<span>2 Items</span>
-										<a href="#">View Cart</a>
-									</div>
-									<ul class="shopping-list">
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Ring</a></h4>
-											<p class="quantity">1x - <span class="amount">$99.00</span></p>
-										</li>
-										<li>
-											<a href="#" class="remove" title="Remove this item"><i class="fa fa-remove"></i></a>
-											<a class="cart-img" href="#"><img src="https://via.placeholder.com/70x70" alt="#"></a>
-											<h4><a href="#">Woman Necklace</a></h4>
-											<p class="quantity">1x - <span class="amount">$35.00</span></p>
-										</li>
-									</ul>
-									<div class="bottom">
-										<div class="total">
-											<span>Total</span>
-											<span class="total-amount">$134.00</span>
-										</div>
-										<a href="checkout.html" class="btn animate">Checkout</a>
-									</div>
-								</div>
-								<!--/ End Shopping Item -->
+
+							<?php
+
+								// $numCount = count($_SESSION['cart']);
+								// $cont = '<a href="checkout.php" class="single-icon"><i class="ti-bag"></i> <span class="total-count">'.$numCount.'</span></a>';
+								// echo $cont;
+							?>
+								
+								<a href="checkout.php" class="single-icon"><i class="ti-bag"></i></a>
 							</div>
 						</div>
 					</div>
@@ -155,8 +129,9 @@
 								<nav class="navbar navbar-expand-lg">
 									<div class="navbar-collapse">	
 										<div class="nav-inner">	
-											<ul class="nav main-menu menu navbar-nav">
-													<li class="active"><a href="#">Home</a></li>
+											<ul class="nav main-menu menu navbar-nav" id="nav_bar">
+													<!--
+													<li class="active"><a href="index.php">Home</a></li>
 													<li><a href="products.php">Product</a></li>												
 													<li><a href="#">Service</a></li>
 													<li><a href="#">Shop<i class="ti-angle-down"></i><span class="new">New</span></a>
@@ -167,16 +142,46 @@
 														</ul>
 													</li>
 													<li><a href="#">Pages</a></li>								
-													<li><a href="admin.php">Contact Us</a></li>
+													<li><a href="admin.php">Contact Us</a></li>-->
 													<?php
+
+														$query = "select * from menu";
+														$result = $connection->query($query);
+														$resFetch = $result->fetchAll();
+														//var_dump($resFetch[0]->brand_name);
+														$content = "";
+
+														$selfFull = ($_SERVER['PHP_SELF']);
+														$selfArray = explode("/", $selfFull);
+														$self = $selfArray[count($selfArray)-1];
+														//echo($self);
+
+														foreach($resFetch as $res){
+															if($res->href == $self){
+																$content.="<li class='active'><a href=".$res->href.">".$res->title."</a></li>";
+															}
+															else{
+																$content.="<li><a href=".$res->href.">".$res->title."</a></li>";
+															}
+															
+														}
+														echo $content;
+
+
+														$admNav = "";
 														if(isset($_SESSION['users'])){
 															if($_SESSION['users']->role_id == "1"){
-																?>
-																<li><a href="admin.php">Admin</a></li>
-																<?php
+																if($self == "admin.php"){
+																	$admNav.="<li class='active'><a href='admin.php'>Admin</a></li>";
+																}
+																else{
+																	$admNav.="<li><a href='admin.php'>Admin</a></li>";
+																}
+																echo $admNav;
+																
 															}
 															else if($_SESSION['users']->role_id == "2"){
-																var_dump("korisnik");
+																//var_dump("korisnik");
 															}
 														};
 													?>

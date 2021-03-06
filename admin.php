@@ -26,7 +26,9 @@
 						<a href="#" id="slider_pic_btn" class="admin-btn" name="slider_pic_nm">Slider picture</a>
 					</div>
 
-					<div id="admin_center"></div>
+					<div id="admin_center">
+
+					</div>
 					
 
 				</div>
