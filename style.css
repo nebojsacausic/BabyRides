@@ -5082,3 +5082,14 @@ Version:1.0
 .active_nav{
 	background-color: #F7941D !important;
 }
+
+.update-mail{
+	margin: auto;
+    width: 40%;
+}
+
+
+.message_contact{
+	margin: 15px;
+    width: 100%;
+}

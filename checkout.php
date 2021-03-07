@@ -90,22 +90,13 @@
 									$ispis.='<tr>
 												<td class="image" data-title="No"><img src="/PHP1/BabyRoller/pictures/'.$red->href.'" alt="'.$red->href.'"></td>
 												<td class="product-des" data-title="Description">
-													<p class="product-name"><a href="#">'.$red->product_name.'</a></p>
+													<p class="product-name"><a href="#" name="product-naame">'.$red->product_name.'</a></p>
 												</td>
-												<td class="price" data-title="Price"><span>$'.$red->price.'</span></td>
+												<td class="price" data-title="Price"><span name="product-price">$'.$red->price.'</span></td>
 												<td class="qty" data-title="Qty"><!-- Input Order -->
 												<div class="input-group">
-													<div class="button minus">
-														<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-															<i class="ti-minus"></i>
-														</button>
-													</div>
-													<input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="100" value="'.$kol.'">
-													<div class="button plus">
-														<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-															<i class="ti-plus"></i>
-														</button>
-													</div>
+													<span>'.$kol.'</span>
+													
 												</div>
 												<!--/ End Input Order -->
 												<td class="total-amount" data-title="Total"><span>$'.$totalPerProduct.'</span></td>
@@ -125,6 +116,7 @@
 					<!--/ End Shopping Summery -->
 				</div>
 			</div>
+			
 			<div class="row">
 				<div class="col-12">
 					<!-- Total Amount -->
@@ -137,7 +129,7 @@
 								<div class="right">
 									<ul>
 										<?php
-											$cont = "<li>Cart Subtotal<span>$$cartSubtotal</span></li>
+											$cont = "
 													<li>Shipping<span>Free</span></li>
 													<li class='last'>You Pay<span>$$cartSubtotal</span></li>";
 
@@ -145,7 +137,7 @@
 										?>
 									</ul>
 									<div class="button5">
-										<a href="#" class="btn">Checkout</a>
+										<input type="submit" name="make-order" id="make-order" value="Order">
 									</div>
 								</div>
 							</div>

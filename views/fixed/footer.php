@@ -127,5 +127,7 @@
 	<script src="js/filter.js" type="text/javascript"></script>
 	<script src="js/regexSlider.js" type="text/javascript"></script>
 	<script src="js/regexProdUpdate.js" type="text/javascript"></script>
+	<script src="js/cart.js" type="text/javascript"></script>
+	<script src="js/contactCheck.js" type="text/javascript"></script>
 </body>
 </html>

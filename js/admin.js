@@ -6,9 +6,31 @@ $(document).ready(function() {
     $("#add_product").click(addProduct);
     $("#products_btn").click(productsAjax);
     $("#slider_pic_btn").click(sliderAjax);
+    $("#update_mail").click(updateMail);
 });
 
 //----------------------SENDING REQUESTS-------------------------
+
+function updateMail(){
+    $.ajax({
+		url: "views/contactSend.php",
+		method: "post",
+		dateType: "json",
+        data : {
+            updMail : true
+        },
+		success: function(data, textStatus, xhr){
+			fillUpdateMail(data);
+		},
+		error: function (err) {
+			console.log(err);
+		}
+    });
+}
+
+
+
+
 //Brands request
 function brandAjax(){
 
@@ -887,3 +909,45 @@ function updateBrand(){
     })
 }
 
+
+function fillUpdateMail(data){
+    content = `<form class="form update-mail">
+                <div class="admin_row">
+                    <div class="col_admin_row">
+                        <div class="form-group">
+                            <h5>Update email</h5>
+                            <input type="text" name="update_email" id="update_email" value="${data.email}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn_register">
+                <input type="button" name="update-admin-mail" id="update-admin-mail" class="btn" value="UPDATE">
+                </div>
+            </form>`;
+    
+    
+    $("#admin_center").html(content);
+    $("#update-admin-mail").click(updateAdminMail);
+}
+
+function updateAdminMail(){
+    var email = $("#update_email").val();
+    
+    $.ajax({
+        url : "views/contactSend.php",
+        method : "post",
+        dataType: "json",
+        data : {
+            email : email,
+            update_admin_email : true
+        },
+        success : function(data){
+            alert(data.message);
+            //brandAjax(data);
+        },
+        error : function(xhr, status, errorMsg){
+            console.log("Nesto nije ok sa serverom");
+        }
+    });
+}

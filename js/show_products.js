@@ -19,7 +19,6 @@ $(document).ready(function() {
     });
 
     $(".del-from-cart").click(deleteFromCart);
-    //productsPrint();
 });
 
 function productsPrint(products){
@@ -93,11 +92,12 @@ function deleteFromCart(e){
         url: "/PHP1/BabyRoller/views/cart.php",
         data: {
           idDelete: idDelete,
-          setIdeDelete : true
+          setIdDelete : true
         },
         dataType: "json",
         success: function (data, text, xhr) {
           console.log(xhr);
+          console.log(data);
           currentOnCart(data)
         },
         error: function (xhr, status, err) {
@@ -109,35 +109,46 @@ function deleteFromCart(e){
 function currentOnCart(data){
     if(data.length > 0){
         var cont = "";
-
+        
+        var uk;
+        var ukupno = 0;
         data.forEach(function(p) {
+            
+            var br = parseInt(p.price);
+            //console.log(p.kolicina);
+
+            uk = br*p.kolicina;
+            console.log(uk);
+            ukupno += uk;
+            console.log(ukupno);
             cont += `<tr>
-                            <td class="image" data-title="No"><img src="/PHP1/BabyRoller/pictures/${p.href}" alt="'.$red->href.'"></td>
+                            <td class="image" data-title="No"><img src="/PHP1/BabyRoller/pictures/${p.href}" alt="${p.alt}"></td>
                             <td class="product-des" data-title="Description">
-                                <p class="product-name"><a href="#">'.$red->product_name.'</a></p>
+                                <p class="product-name"><a href="#">${p.product_name}</a></p>
                             </td>
-                            <td class="price" data-title="Price"><span>$'.$red->price.'</span></td>
+                            <td class="price" data-title="Price"><span>${p.price}</span></td>
                             <td class="qty" data-title="Qty"><!-- Input Order -->
                             <div class="input-group">
-                                <div class="button minus">
-                                    <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                        <i class="ti-minus"></i>
-                                    </button>
-                                </div>
-                                <input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="100" value="'.$kol.'">
-                                <div class="button plus">
-                                    <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-                                        <i class="ti-plus"></i>
-                                    </button>
-                                </div>
+                                <span>${p.kolicina}</span>
                             </div>
                             <!--/ End Input Order -->
-                            <td class="total-amount" data-title="Total"><span>$'.$totalPerProduct.'</span></td>
-                            <td class="action" data-title="Remove"><a href="#" class="del-from-cart" data-id='.$red->id_product.'><i class="ti-trash remove-icon"></i></a></td>
+                            <td class="total-amount" class="tot-count" data-title="Total"><span>${p.price*p.kolicina}</span></td>
+                            <td class="action" data-title="Remove"><a href="#" class="del-from-cart" data-id=${p.id_product}><i class="ti-trash remove-icon"></i></a></td>
                         </tr>`;
+            
+            
+            
         });
+
+        console.log(ukupno);
+
         
-        //$("#prod-on-cart").html(cont);
+
+        $("#prod-on-cart").html(cont);
+        $(".del-from-cart").click(deleteFromCart);
+        $(".last span").text(ukupno);
+        
+
     }
     else{
         $("#prod-on-cart").html("<h2>No products on cart</h2>");

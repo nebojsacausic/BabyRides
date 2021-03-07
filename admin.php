@@ -24,6 +24,7 @@
 						<a href="#" id="products_btn" class="admin-btn" name="sviProizvodi">Products</a>
 						<a href="#" id="add_product" class="admin-btn" name="add_product_nm">Add new product</a>
 						<a href="#" id="slider_pic_btn" class="admin-btn" name="slider_pic_nm">Slider picture</a>
+						<a href="#" id="update_mail" class="admin-btn" name="update_mail">Update email</a>
 					</div>
 
 					<div id="admin_center">
