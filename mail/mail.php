@@ -1,10 +1,19 @@
 <?php
+include "../views/connection.php";
+session_start();
 
 $name = $_POST{'message_name'};
 $email = $_POST{'message_mail'};
 //$subject = $_POST{'subject'};
 $message = $_POST['message_text'];
-$subject = "Ne message from site";
+$subject = "New message from site";
+
+    $querry = "SELECT email FROM users WHERE role_id = 1";
+    $ressult = $connection->query($querry);
+    $resFetch = $ressult->fetch();
+    $adminMail = $resFetch->email;
+    
+    //var_dump($adminMail);
 
 
 $regName = '/^[A-Z][a-z]{2,24}(\s[A-Z][a-z]{2,24})+$/';
@@ -33,7 +42,7 @@ $errBack = [];
         Message: ".$message."
         ";
 
-        mail ("nebojsacausic@yahoo.com" , "New Message", $email_message);
+        mail ($adminMail , "New Message", $email_message);
         header("location: ../index.php");
     }
 

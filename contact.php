@@ -28,7 +28,7 @@
 				<!-- End Breadcrumbs -->
 						
 				<!-- Start registration -->
-				<section class="shop registration section">
+				<section class="shop registration section contant-form">
 					<div class="container">
 						<div class="row"> 
 							<div class="col-lg-8 col-12">

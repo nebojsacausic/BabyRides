@@ -7,9 +7,46 @@ $(document).ready(function() {
     $("#products_btn").click(productsAjax);
     $("#slider_pic_btn").click(sliderAjax);
     $("#update_mail").click(updateMail);
+    $("#questionnaire").click(questionnaireAjax);
+    $("#menu_adm").click(menuAjax);
 });
 
 //----------------------SENDING REQUESTS-------------------------
+
+
+function menuAjax(){
+    $.ajax({
+		url: "views/menuCrud.php",
+		method: "post",
+		dateType: "json",
+        data : {
+            getMenu : true
+        },
+		success: function(data, textStatus, xhr){
+			printMenu(data);
+		},
+		error: function (err) {
+			console.log(err);
+		}
+    });
+}
+
+function questionnaireAjax(){
+    $.ajax({
+		url: "views/getQuestions.php",
+		method: "post",
+		dateType: "json",
+		success: function(data, textStatus, xhr){
+			questionnaireSend(data);
+		},
+		error: function (err) {
+			console.log(err);
+		}
+    });
+}
+
+
+
 
 function updateMail(){
     $.ajax({
@@ -60,7 +97,7 @@ function sliderAjax(){
 		method: "post",
         dateType: "json",
 		success: function(data, textStatus, xhr){
-            console.log(data);
+            //console.log(data);
             sliderContent(data);
 		},
 		error: function (err) {
@@ -129,7 +166,7 @@ function deleteSlider(){
     console.log(idDelete);
 
     $.ajax({
-        url: "/PHP1/BabyRoller/views/sliderCrud.php",
+        url: "views/sliderCrud.php",
         method: "post",
         dateType: "json",
         data: {
@@ -150,17 +187,16 @@ function deleteSlider(){
 
 //Categories request
 function categoryAjax(){
-    console.log("oooo")
     $.ajax({
-		url: "/PHP1/BabyRoller/categories.php",
+		url: "categories.php",
 		method: "post",
 		dateType: "json",
 		data: {
 			category: "category"
 		},
 		success: function(data, textStatus, xhr){
-			console.log(data);
-            console.log(xhr.status)
+			//console.log(data);
+            //console.log(xhr.status)
             admin_category(data);
 		},
 		error: function (err) {
@@ -172,11 +208,11 @@ function categoryAjax(){
 function productsAjax(){
     
     $.ajax({
-		url: "views/getProducts.php",
+		url: "views/getProductsAdmin.php",
 		method: "post",
 		dateType: "json",
 		success: function(data, textStatus, xhr){
-			console.log(data);
+			//console.log(data);
             //console.log(xhr.status)
             listProducts(data);
 		},
@@ -230,10 +266,10 @@ function listProducts(data){
 
 function updateProduct(){
     var idUpdate = $(this).data("id");
-    console.log(idUpdate);
+    //console.log(idUpdate);
 
     $.ajax({
-        url : "/PHP1/BabyRoller/views/productsCrud.php",
+        url : "views/productsCrud.php",
         method : "post",
         dataType: "json",
         data : {
@@ -245,7 +281,7 @@ function updateProduct(){
             listUpdateProduct(prod);
             productsUpdateBrand(prod.id_brand);
             productsUpdateCategories(prod.id_category);
-            console.log(prod.id_brand)
+            //console.log(prod.id_brand)
         },
         error : function(xhr, status, errorMsg){
             console.log("Nesto nije ok sa serverom");
@@ -262,8 +298,8 @@ function productsUpdateBrand(brandId){
             brand: "brand",
         },
         success: function(brands, textStatus, xhr){
-            console.log(brands);
-            console.log(xhr.status)
+            //console.log(brands);
+            //console.log(xhr.status)
             dropdownBrands(brands, brandId);
         },
         error: function (err) {
@@ -274,7 +310,7 @@ function productsUpdateBrand(brandId){
 
 function productsUpdateCategories(catId){
     $.ajax({
-		url: "/PHP1/BabyRoller/categories.php",
+		url: "categories.php",
 		method: "post",
 		dateType: "json",
 		data: {
@@ -282,7 +318,7 @@ function productsUpdateCategories(catId){
 		},
 		success: function(categories, textStatus, xhr){
 			//console.log(data);
-            console.log(xhr.status)
+            //console.log(xhr.status)
             dropdownCat(categories, catId);
 		},
 		error: function (err) {
@@ -297,7 +333,7 @@ function productsUpdateCategories(catId){
 
 
 function listUpdateProduct(data){
-    console.log(data);
+    //console.log(data);
     var content = "";
 
     content += 
@@ -397,7 +433,7 @@ function deleteProduct(){
         console.log(idDelete)
 
         $.ajax({
-            url: "/PHP1/BabyRoller/views/productsCrud.php",
+            url: "views/productsCrud.php",
             method: "post",
             dateType: "json",
             data: {
@@ -482,7 +518,7 @@ function addProduct(){
 		},
 		success: function(data, textStatus, xhr){
 			//console.log(data);
-            console.log(xhr.status)
+            //console.log(xhr.status)
             dropdownBrands(data);
 		},
 		error: function (err) {
@@ -492,7 +528,7 @@ function addProduct(){
     
     //Ajax request for category dropdown
     $.ajax({
-		url: "/PHP1/BabyRoller/categories.php",
+		url: "categories.php",
 		method: "post",
 		dateType: "json",
 		data: {
@@ -500,7 +536,7 @@ function addProduct(){
 		},
 		success: function(data, textStatus, xhr){
 			//console.log(data);
-            console.log(xhr.status)
+            //console.log(xhr.status)
             dropdownCat(data);
 		},
 		error: function (err) {
@@ -638,7 +674,7 @@ function categoryCheck(){
     if(arrayErr.length == 0){
         console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRoller/views/categoriesCrud.php",
+            url : "views/categoriesCrud.php",
             method : "post",
             dataType: "json",
             data : {
@@ -667,7 +703,7 @@ function deleteCategory(){
     console.log(idDelete)
 
     $.ajax({
-        url: "/PHP1/BabyRoller/views/categoriesCrud.php",
+        url: "views/categoriesCrud.php",
         method: "post",
         dateType: "json",
         data: {
@@ -711,7 +747,7 @@ function updateCategories(){
         console.log(idUpdate);
 
         $.ajax({
-            url : "/PHP1/BabyRoller/views/categoriesCrud.php",
+            url : "views/categoriesCrud.php",
             method : "post",
             dataType: "json",
             data : {
@@ -815,7 +851,7 @@ function brandCheck(){
     if(arrayErr.length == 0){
         console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRoller/views/brandCrud.php",
+            url : "views/brandCrud.php",
             method : "post",
             dataType: "json",
             data : {
@@ -844,7 +880,7 @@ function deleteBrand(){
         console.log(idDelete)
 
         $.ajax({
-            url: "/PHP1/BabyRoller/views/brandCrud.php",
+            url: "views/brandCrud.php",
             method: "post",
             dateType: "json",
             data: {
@@ -890,7 +926,7 @@ function updateBrand(){
         console.log(idUpdate);
 
         $.ajax({
-            url : "/PHP1/BabyRoller/views/brandCrud.php",
+            url : "views/brandCrud.php",
             method : "post",
             dataType: "json",
             data : {
@@ -950,4 +986,223 @@ function updateAdminMail(){
             console.log("Nesto nije ok sa serverom");
         }
     });
+}
+
+
+
+function questionnaireSend(questions){
+    //console.log(question)
+    var content = `<div id="center_left">
+    <h3 style="text-align:center;">Question</h3></br>
+    <div class="brands_list">
+
+        <table cellpadding='2'>
+            <tr>
+                <th>Question</th>
+                <th>Active</th>						
+            </tr>`;
+
+            questions.forEach(function(question) {
+
+                if(question.active == 1){
+                    content += `<tr>
+                                <td>${question.question}</td>
+                                <td><input type='radio' name='question_nm' checked value='${question.id_questionnaire}'></td>
+                            </tr> `;
+                }
+                else{
+                    content += `<tr>
+                                <td>${question.question}</td>
+                                <td><input type='radio' name='question_nm' value='${question.id_questionnaire}'></td>
+                            </tr> `;
+                }
+                });	
+
+        content += `</table>
+        </div>
+    </div>
+                
+                <div id="center_right">
+                    <form class="form" method="post" action="#">
+                        <div class="btn_register">
+                            <input type="button" id="active_question" class="btn" value="Choose">
+                        </div>
+                        <div class="btn_register">
+                            <input type="button" name="new_question_form" id="new_question_form" class="btn" value="ADD NEW QUESTION">
+                        </div>
+                    </form>
+                </div>`;
+        
+        $("#admin_center").html(content);
+        $("#new_question_form").click(addNewQuestion);
+        $("#active_question").click(active_question);
+}
+
+function active_question(){
+    var activeId = $('input[name="question_nm"]:checked').val();
+    
+    $.ajax({
+        url : "views/insertQuestionnaire.php",
+        method : "post",
+        dataType: "json",
+        data : {
+            activeId : activeId,
+            chooseActive : true
+        },
+        success : function(data){
+            alert(data.message);
+            window.location.href = "admin.php";
+        },
+        error : function(xhr, status, errorMsg){
+            console.log(xhr);
+            console.log("Nesto nije ok sa serverom");
+        }
+    });
+}
+
+
+function addNewQuestion(){
+    var newCont = `<form class="form update-mail">
+                    <div class="admin_row">
+                        <div class="col_admin_row">
+                            <div class="form-group">
+                                <h5>Type new question</h5>
+                                <input type="text" name="new_quest_nm" id="new_quest_id">
+                                <div class='answers_cl'>
+                                    <h5>Type answers</h5>
+                                    <input type="text" name="answer_nm[]" class="new_answer">
+                                </div>
+                                <input type="button" name="add_input" id="add_input" value="New answer" class="btn">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn_register">
+                        <input type="button" name="send_new_question" id="send_new_question" class="btn" value="ADD">
+                    </div>
+                </form>`;
+
+    $("#admin_center").html(newCont);
+
+
+    var answerArr = [];
+    $("#add_input").click(function(){
+        $(".new_answer:last").after("<input type='text' name='answer_nm[]' class='new_answer'>");
+        
+    })
+
+    $("#send_new_question").click(function(){
+
+        var arr = [];
+        arr = $("input[name='answer_nm[]']");
+
+        Array.from(arr).forEach(el => {
+            answerArr.push(el.value);
+            
+        });
+
+        //console.log(answerArr);
+        
+        var newQuestion = $("#new_quest_id").val();
+
+        var errArr = 0;
+        if(newQuestion == ""){
+            errArr++;
+            $("#new_quest_id").css({"border": "1px solid red"});
+        }
+
+        newArrAnswer = [];
+        $.each(answerArr, function( index, value ) {
+            if(value != ""){
+                newArrAnswer.push(value);
+            }
+        });
+
+        console.log(newArrAnswer);
+
+        if(errArr > 0){
+            console.log("Ne valja");
+        }
+        else{
+            $.ajax({
+                url : "views/insertQuestionnaire.php",
+                method : "post",
+                dataType: "json",
+                data : {
+                    newQuestion : newQuestion,
+                    newArrAnswer : newArrAnswer,
+                    newQuestSent : true
+                },
+                success : function(data){
+                    alert(data.message);
+                    //brandAjax(data);
+                },
+                error : function(xhr, status, errorMsg){
+                    console.log(xhr);
+                    console.log("Nesto nije ok sa serverom");
+                }
+            });
+
+        }
+        
+    })
+}
+
+function printMenu(data){
+    var content = `<form class="form update-mail">
+                    <div class="admin_row">
+                        <div class="col_admin_row">
+                            <div class="form-group">
+                                <h5>Update menu</h5>
+                                <select name="menu_list" id="menu_list">`;
+
+                                data.forEach(function(p) {
+                                    content += `<option value="${p.id_menu}">${p.title}</option>`;
+                                });
+
+                    content += `<input type="text" name="update_menu" id="update_menu" value="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn_register">
+                    <input type="button" name="update-admin-menu" id="update-admin-menu" class="btn" value="UPDATE">
+                    </div>
+                </form>`;
+    $("#admin_center").html(content);
+    $("#menu_list").change(function(){
+        var unos = $("#menu_list option:selected").text();
+        $("#update_menu").val(unos);
+    });
+
+    
+    $("#update-admin-menu").click(function(){
+        
+        var inputString = $("#update_menu").val();
+        var id = $("#menu_list option:selected").val();
+        var regMenu = /^[A-Z][a-z]{2,15}(\s[A-Z][a-z]{2,15})*$/;
+
+        if(!regMenu.test(inputString)){
+            $("#update_menu").css({"border": "1px solid red"});
+        }
+        else{
+            $.ajax({
+                url: "views/menuCrud.php",
+                method: "post",
+                dateType: "json",
+                data : {
+                    inputString : inputString,
+                    id : id,
+                    updMenu : true
+                },
+                success: function(data, textStatus, xhr){
+                    alert(data.message);
+                    window.location.href = "admin.php";
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    })
 }

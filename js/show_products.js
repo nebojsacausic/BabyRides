@@ -1,35 +1,70 @@
-$(document).ready(function() {
+$(document).ready(function () {
+  $.ajax({
+    url: "views/getProducts.php",
+    method: "post",
+    dateType: "json",
+    data: {
+      //category: "category"
+    },
+    success: function (data, textStatus, xhr) {
+      //console.log(data);
+      //console.log(xhr.status);
+      productsPrint(data.data);
+      pagination(data.numb.number);
+    },
+    error: function (err) {
+      console.log(err);
+    },
+  });
 
-    
-    $.ajax({
-		url: "/PHP1/BabyRoller/views/getProducts.php",
-		method: "post",
-		dateType: "json",
-		data: {
-			//category: "category"
-		},
-		success: function(data, textStatus, xhr){
-			console.log(data);
-            console.log(xhr.status)
-            productsPrint(data);
-		},
-		error: function (err) {
-			console.log(err);
-		}
-    });
-
-    $(".del-from-cart").click(deleteFromCart);
+  $(".del-from-cart").click(deleteFromCart);
 });
 
-function productsPrint(products){
-    var content = "";
+function pagination(numb) {
+  var offset = 6;
+  var pagLength = Math.ceil(numb / offset);
+  //   console.log("PagLength: " + pagLength);
+  var html = "<ul>";
 
-    products.forEach(function(p) {
-        content += `<div class="col-lg-4 col-md-6 col-12">
+  for (let i = 0; i < pagLength; i++) {
+    var zbir = i + 1;
+    html += `<li><a href='#' class='paginacija' data-limit="${i}">${zbir}</a></li>`;
+  }
+  html += "</ul>";
+  //console.log(html);
+  $("#pagination").html(html);
+
+  let pagination = document.querySelectorAll(".paginacija");
+  $(pagination).click(function (e) {
+    e.preventDefault();
+    // console.log($(this));
+    console.log($(this).attr("data-limit"));
+    let limit = $(this).attr("data-limit");
+
+    $.ajax({
+      type: "post",
+      url: "views/getProducts.php",
+      data: {
+        limit: limit,
+      },
+      dataType: "json",
+      success: function (data) {
+        // console.log(data);
+        productsPrint(data.data);
+      },
+    });
+  });
+}
+
+function productsPrint(products) {
+  var content = "";
+
+  products.forEach(function (p) {
+    content += `<div class="col-lg-4 col-md-6 col-12">
                         <div class="single-product">
                             <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="/PHP1/BabyRoller/pictures/${p.href}" alt="${p.alt}">
+                                <a href="product_details.php?id=${p.id_product}">
+                                    <img class="default-img" src="pictures/${p.href}" alt="${p.alt}">
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action">
@@ -43,114 +78,110 @@ function productsPrint(products){
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a href="product-details.html">${p.product_name}</a></h3>
+                                <h3><a href="product_details.php?id=${p.id_product}">${p.product_name}</a></h3>
                                 <div class="product-price">
                                     <span>$${p.price},00</span>
                                 </div>
                             </div>
                         </div>
                     </div>`;
-                });	
-  
+  });
 
-    $("#products_area").html(content);
-    $(".add_to_cart").click(addToCart);
-    
+  $("#products_area").html(content);
+  $(".add_to_cart").click(addToCart);
 }
 
+function addToCart(e) {
+  e.preventDefault();
+  let idProductCart = $(this).data("id");
 
-function addToCart(e){
-    e.preventDefault();
-    let idProductCart = $(this).data('id');
-
-
-    $.ajax({
-        type: "post",
-        url: "/PHP1/BabyRoller/views/cart.php",
-        data: {
-          idProduct: idProductCart,
-          setCartSession : true
-        },
-        dataType: "json",
-        success: function (data, text, xhr) {
-          console.log(xhr);
-        },
-        error: function (xhr, status, err) {
-          console.log(xhr);
-        },
-      });
+  $.ajax({
+    type: "post",
+    url: "views/cart.php",
+    data: {
+      idProduct: idProductCart,
+      setCartSession: true,
+    },
+    dataType: "json",
+    success: function (data, text, xhr) {
+      console.log(xhr);
+    },
+    error: function (xhr, status, err) {
+      //console.log(xhr);
+      window.location.href = "../login.php";
+    },
+  });
 }
 
+function deleteFromCart(e) {
+  e.preventDefault();
+  let idDelete = $(this).data("id");
 
-function deleteFromCart(e){
-    e.preventDefault();
-    let idDelete = $(this).data('id');
-
-    
-    $.ajax({
-        type: "post",
-        url: "/PHP1/BabyRoller/views/cart.php",
-        data: {
-          idDelete: idDelete,
-          setIdDelete : true
-        },
-        dataType: "json",
-        success: function (data, text, xhr) {
-          console.log(xhr);
-          console.log(data);
-          currentOnCart(data)
-        },
-        error: function (xhr, status, err) {
-          console.log(xhr);
-        },
-      });
+  $.ajax({
+    type: "post",
+    url: "views/cart.php",
+    data: {
+      idDelete: idDelete,
+      setIdDelete: true,
+    },
+    dataType: "json",
+    success: function (data, text, xhr) {
+      console.log(xhr);
+      console.log(data);
+      currentOnCart(data);
+    },
+    error: function (xhr, status, err) {
+      console.log(xhr);
+    },
+  });
 }
 
-function currentOnCart(data){
-    if(data.length > 0){
-        var cont = "";
-        
-        var uk;
-        var ukupno = 0;
-        data.forEach(function(p) {
-            
-            var br = parseInt(p.price);
-            //console.log(p.kolicina);
+function currentOnCart(data) {
+  if (data.length > 0) {
+    var cont = "";
 
-            uk = br*p.kolicina;
-            console.log(uk);
-            ukupno += uk;
-            console.log(ukupno);
-            cont += `<tr>
-                            <td class="image" data-title="No"><img src="/PHP1/BabyRoller/pictures/${p.href}" alt="${p.alt}"></td>
+    var uk;
+    var ukupno = 0;
+    data.forEach(function (p) {
+      var br = parseInt(p.price);
+      //console.log(p.kolicina);
+
+      uk = br * p.kolicina;
+      console.log(uk);
+      ukupno += uk;
+      console.log(ukupno);
+      cont += `<tr>
+                            <td class="image" data-title="No"><img src="pictures/${
+                              p.href
+                            }" alt="${p.alt}"></td>
                             <td class="product-des" data-title="Description">
-                                <p class="product-name"><a href="#">${p.product_name}</a></p>
+                                <p class="product-name"><a href="#">${
+                                  p.product_name
+                                }</a></p>
                             </td>
-                            <td class="price" data-title="Price"><span>${p.price}</span></td>
+                            <td class="price" data-title="Price"><span>${
+                              p.price
+                            }</span></td>
                             <td class="qty" data-title="Qty"><!-- Input Order -->
                             <div class="input-group">
                                 <span>${p.kolicina}</span>
                             </div>
                             <!--/ End Input Order -->
-                            <td class="total-amount" class="tot-count" data-title="Total"><span>${p.price*p.kolicina}</span></td>
-                            <td class="action" data-title="Remove"><a href="#" class="del-from-cart" data-id=${p.id_product}><i class="ti-trash remove-icon"></i></a></td>
+                            <td class="total-amount" class="tot-count" data-title="Total"><span>${
+                              p.price * p.kolicina
+                            }</span></td>
+                            <td class="action" data-title="Remove"><a href="#" class="del-from-cart" data-id=${
+                              p.id_product
+                            }><i class="ti-trash remove-icon"></i></a></td>
                         </tr>`;
-            
-            
-            
-        });
+    });
 
-        console.log(ukupno);
+    console.log(ukupno);
 
-        
-
-        $("#prod-on-cart").html(cont);
-        $(".del-from-cart").click(deleteFromCart);
-        $(".last span").text(ukupno);
-        
-
-    }
-    else{
-        $("#prod-on-cart").html("<h2>No products on cart</h2>");
-    }
+    $("#prod-on-cart").html(cont);
+    $(".del-from-cart").click(deleteFromCart);
+    $(".last span").text(ukupno);
+  } else {
+    $("#prod-on-cart").html("<h2>No products on cart</h2>");
+  }
 }

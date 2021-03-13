@@ -390,7 +390,6 @@ Version:1.0
 	font-size: 15px;
 	color: #F7941D;
 	position: relative;
-	top: 3px;
 }
 .header.shop .right-content{
 	float:right;
@@ -4347,7 +4346,7 @@ Version:1.0
 /* Blog Single CSS */
 .blog-single{
 	background:#fff;
-	padding:70px 0 100px;
+	padding:30px 0 100px;
 }
 .blog-single .blog-single-main {
 	margin-top: 30px;
@@ -4360,7 +4359,6 @@ Version:1.0
 	position:relative;
 }
 .blog-single .image img{
-	width:100%;
 	height:100%;
 }
 .blog-single .blog-title {
@@ -5093,3 +5091,104 @@ Version:1.0
 	margin: 15px;
     width: 100%;
 }
+
+.message_area table{
+	text-align: center;
+	margin-top: 20px;
+}
+
+.message_area h3, h6{
+	text-align: center;
+	margin-top: 20px;
+}
+
+.update-mail .admin_row .col_admin_row .form-group input{
+	margin: 5px 0;
+}
+
+.blog-single .single_left{
+	width: 50%;
+}
+
+
+.blog-single .single_right{
+	width: 50%;
+	
+}
+
+.autor_name{
+	text-align: center;
+}
+
+.autor_cont p{
+	font-size: large;
+}
+
+.single_cl{
+	text-align: center;
+}
+
+#pagination ul{
+    text-align: center;
+    padding-top: 20px;
+}
+
+#pagination ul li{
+    display: inline;
+    margin: 8px;
+}
+
+#pagination ul li a:hover{
+    color: #fd7e14;
+}
+
+.logo_col{
+	margin-left: 0px;
+}
+
+.cart_col{
+	margin-right: 0px;
+	font-size: 10px;
+	margin-bottom: 5px;
+}
+
+.cart_col .cart_col_shop{
+    margin-bottom: 10px;
+}
+
+.flex-direction-nav{
+    display: none;
+}
+
+#menu_list{
+	width: 100%;
+    margin-bottom: 1rem;
+	height: 35px;
+}
+
+#questionnaire-area{
+    text-align: center;
+}
+
+#questionnaire-area form h3{
+    padding-bottom: 15px;
+}
+
+#questionnaire-area #questionnaire_submit{
+    margin-top: 15px;
+}
+
+.contant-form{
+    min-height: 700px;
+}
+
+.message_contact{
+    min-height: 300px;
+}
+
+#search-products{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #F7941D;
+}
+

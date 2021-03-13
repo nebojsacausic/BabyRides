@@ -16,7 +16,7 @@ function regexProdUpdate(){
 
     //Regex front test
     if(!regTitle.test(entry_title)){
-        console.log(entry_title);
+        //console.log(entry_title);
         $("#add_item_title").css({"border": "1px solid red"});
         return false;
     }

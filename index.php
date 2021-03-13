@@ -90,7 +90,49 @@
 									<div class="tab-single">
 
 
-										<div class="row" id="indexCategoriesFilter"></div>
+										<div class="row" id="indexCategoriesFilter">
+										
+												<?php
+													$query = "SELECT * 
+													FROM products INNER JOIN pictures ON products.id_product = pictures.id_product
+													LIMIT 8";
+													$ressult = $connection->query($query);
+													$resFetch = $ressult->fetchAll();
+													
+													$content = "";
+													foreach($resFetch as $res){
+														$content.='
+														<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+															<div class="single-product">
+																<div class="product-img">
+																	<a href="product_details.php?id='.$res->id_product.'">
+																		<img class="default-img" src="pictures/'.$res->href.'" alt="'.$res->alt.'">
+																	</a>
+																	<div class="button-head">
+																		<div class="product-action">
+																			<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+																			<a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+																			<a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
+																		</div>
+																		<div class="product-action-2">
+																			<a title="Add to cart" href="#">Add to cart</a>
+																		</div>
+																	</div>
+																</div>
+																<div class="product-content">
+																	<h3><a href="product_details.php?id='.$res->id_product.'">'.$res->product_name.'</a></h3>
+																	<div class="product-price">
+																		<span>$'.$res->price.'</span>
+																	</div>
+																</div>
+															</div>
+														</div>';
+													}
+													echo $content;
+
+												?>
+										
+										</div>
 
 
 										
@@ -1234,9 +1276,8 @@
 							foreach($resFetch as $res){
 								$content.='<div class="single-product">
 											<div class="product-img">
-												<a href="product-details.html">
-													<img class="default-img" src="/PHP1/BabyRoller/pictures/'.$res->href.'" alt="#">
-													<img class="hover-img" src="https://via.placeholder.com/550x750" alt="#">
+												<a href="product_details.php?id='.$res->id_product.'">
+													<img class="default-img" src="pictures/'.$res->href.'" alt="#">
 													<span class="out-of-stock">Hot</span>
 												</a>
 												<div class="button-head">
@@ -1251,7 +1292,7 @@
 												</div>
 											</div>
 											<div class="product-content">
-												<h3><a href="product-details.html">'.$res->product_name.'</a></h3>
+												<h3><a href="product_details.php?id='.$res->id_product.'">'.$res->product_name.'</a></h3>
 												<div class="product-price">
 													<span class="old">'.$res->price.'</span>
 													<span>$50.00</span>
@@ -1317,28 +1358,7 @@
 	</section>
 	<!-- End Shop Services Area -->
 	
-	<!-- Start Shop Newsletter  -->
-	<section class="shop-newsletter section">
-		<div class="container">
-			<div class="inner-top">
-				<div class="row">
-					<div class="col-lg-8 offset-lg-2 col-12">
-						<!-- Start Newsletter Inner -->
-						<div class="inner">
-							<h4>Newsletter</h4>
-							<p> Subscribe to our newsletter and get <span>10%</span> off your first purchase</p>
-							<form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
-								<input name="EMAIL" placeholder="Your email address" required="" type="email">
-								<button class="btn">Subscribe</button>
-							</form>
-						</div>
-						<!-- End Newsletter Inner -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Shop Newsletter -->
+	
 	
 	<!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">

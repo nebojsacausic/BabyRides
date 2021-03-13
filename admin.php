@@ -1,9 +1,18 @@
 <?php
-	//ob_start();
+	ob_start();
     include "views/fixed/head.php";
 	include "views/fixed/header.php";
 	include "views/connection.php";
 
+	if(isset($_SESSION['users'])){
+		if($_SESSION['users']->role_id != 1){
+			header("Location: index.php");
+		}
+	}
+	else{
+		header("Location: index.php");
+	}
+	
 ?>
 
 <!DOCTYPE html>
@@ -25,6 +34,8 @@
 						<a href="#" id="add_product" class="admin-btn" name="add_product_nm">Add new product</a>
 						<a href="#" id="slider_pic_btn" class="admin-btn" name="slider_pic_nm">Slider picture</a>
 						<a href="#" id="update_mail" class="admin-btn" name="update_mail">Update email</a>
+						<a href="#" id="questionnaire" class="admin-btn" name="update_mail">Questionnaire</a>
+						<a href="#" id="menu_adm" class="admin-btn" name="menu_adm">Menu</a>
 					</div>
 
 					<div id="admin_center">

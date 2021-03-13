@@ -22,7 +22,9 @@
 	</div>
 	<!-- End Breadcrumbs -->
 
-			
+	<?php 
+		if(isset($_SESSION['cart'])){
+	?>
 	<!-- Shopping Cart -->
 	<div class="shopping-cart section">
 		<div class="container">
@@ -88,7 +90,7 @@
 									$cartSubtotal += $totalPerProduct;
 
 									$ispis.='<tr>
-												<td class="image" data-title="No"><img src="/PHP1/BabyRoller/pictures/'.$red->href.'" alt="'.$red->href.'"></td>
+												<td class="image" data-title="No"><img src="pictures/'.$red->href.'" alt="'.$red->href.'"></td>
 												<td class="product-des" data-title="Description">
 													<p class="product-name"><a href="#" name="product-naame">'.$red->product_name.'</a></p>
 												</td>
@@ -137,7 +139,7 @@
 										?>
 									</ul>
 									<div class="button5">
-										<input type="submit" name="make-order" id="make-order" value="Order">
+										<input type="submit" class="btn" name="make-order" id="make-order" value="Order">
 									</div>
 								</div>
 							</div>
@@ -152,6 +154,17 @@
 
 
 
+
 <?php
+		}
+		else{
+			echo '<div class="shopping-cart section">
+					<div class="container">
+						<h2>Noting on cart</h2>
+					</div>
+				</div>';
+		}
+
     include "views/fixed/footer.php";
 ?>
+

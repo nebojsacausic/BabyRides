@@ -42,23 +42,24 @@ if(isset($_POST['sent'])){
 
                     $_SESSION['users'] = $res;
                     if($_SESSION['users']){
-                        //header("Location: admin.php");
                         http_response_code(200);
                         header('Content-Type: application/json');
                         echo json_encode(['message' => $message, $res]);
                     }
                     else{
-                        echo "Dalje neces moci";
+                        echo json_encode(["message"=> "Bad request"]);
                     }
+                }
+                else{
+                    echo json_encode(["message"=> "Wrong email or password. Try again"]);
                 }
             
             }
-            else{
-                echo "Error";
-            }
         }
         else{
-            echo "Connection problem";
+            http_response_code(500);
+            header('Content-Type: application/json');
+            echo json_encode(["message"=> "Server problem"]);
         }
     }
     

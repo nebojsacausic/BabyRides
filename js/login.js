@@ -36,7 +36,7 @@ function loginCheck(){
     if(arrayErr.length == 0){
         console.log("nema gresaka")
         $.ajax({
-            url : "/PHP1/BabyRoller/views/loginSesion.php",
+            url : "views/loginSesion.php",
             method : "post",
             dataType: "json",
             data : {
@@ -45,13 +45,16 @@ function loginCheck(){
                 sent : true
             },
             success : function(data){
-                console.log("Sve ok sa serverom");
-                console.log(data);
-                if(data[0].role_id == "1"){
-                    window.location.href = "/PHP1/BabyRoller/admin.php";
+                if(data.message == "Successfull login!"){
+                    if(data[0].role_id == "1"){
+                        window.location.href = "admin.php";
+                    }
+                    else if(data[0].role_id == "2"){
+                        window.location.href = "index.php";
+                    }
                 }
-                else if(data[0].role_id == "2"){
-                    window.location.href = "/PHP1/BabyRoller/index.php";
+                else{
+                    alert(data.message);
                 }
             },
             error : function(xhr, status, errorMsg){

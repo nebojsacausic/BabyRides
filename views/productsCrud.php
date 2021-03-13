@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 include "connection.php";
 
 if(isset($_POST['add_item_btn'])){
@@ -94,7 +94,7 @@ if(isset($_POST['add_item_btn'])){
             //$message2 = "Successfully added pic!";
     
             if($result2){
-                header("Location: /PHP1/BabyRoller/admin.php");
+                header("Location: ../admin.php");
             }
         }
         
@@ -158,7 +158,6 @@ else if(isset($_POST['update_item_btn'])){
     $brand = $_POST['brands_nm'];
     $active = $_POST['active_nm'];
     $description = $_POST['item_description'];
-    $picture = $_FILES['update_pic_nm'];
 
     //picture
     $tmp = $_FILES['update_pic_nm']['tmp_name'];
@@ -229,25 +228,30 @@ else if(isset($_POST['update_item_btn'])){
         //$message = "Successfully added new product!";
         $lastId = $connection -> lastInsertId();
     
-        var_dump($result);
+        //var_dump($result);
     
-        if($result){
+        if($fileName != ""){
+            if($result){
 
-            $querry2 = "UPDATE pictures 
-                        SET href = :href, alt = :alt
-                        WHERE id_product = :id_product";
-            $statement2 = $connection -> prepare($querry2);
-            var_dump($statement2);
-            $statement2 -> bindParam(":href", $timeName);
-            $statement2 -> bindParam(":alt", $alt);
-            $statement2 -> bindParam(":id_product", $id_product);
-    
-            $result2 = $statement2->execute() ? 201 : 500;
-            //$message2 = "Successfully added pic!";
-    
-            if($result2){
-                header("Location: /PHP1/BabyRoller/admin.php");
+                $querry2 = "UPDATE pictures 
+                            SET href = :href, alt = :alt
+                            WHERE id_product = :id_product";
+                $statement2 = $connection -> prepare($querry2);
+                var_dump($statement2);
+                $statement2 -> bindParam(":href", $timeName);
+                $statement2 -> bindParam(":alt", $alt);
+                $statement2 -> bindParam(":id_product", $id_product);
+        
+                $result2 = $statement2->execute() ? 201 : 500;
+                //$message2 = "Successfully added pic!";
+        
+                if($result2){
+                    header("Location: ../admin.php");
+                }
             }
+        }
+        else{
+            header("Location: ../admin.php");
         }
     }
 

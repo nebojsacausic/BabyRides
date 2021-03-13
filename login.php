@@ -2,10 +2,7 @@
     include "views/fixed/head.php";
 	include "views/fixed/header.php";
 	
-	$_SESSION['sesija'] = "Ja napisao";
-	echo $_SESSION['sesija'];
 ?>
-
 <!-- Login page content -->
 
 
@@ -16,8 +13,8 @@
 					<div class="col-12">
 						<div class="bread-inner">
 							<ul class="bread-list">
-								<li><a href="index1.html">Home<i class="ti-arrow-right"></i></a></li>
-								<li class="active"><a href="blog-single.html">registration</a></li>
+								<li><a href="index.php">Home<i class="ti-arrow-right"></i></a></li>
+								<li class="active"><a href="login.php">login</a></li>
 							</ul>
 						</div>
 					</div>

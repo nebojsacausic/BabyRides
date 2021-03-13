@@ -1,11 +1,12 @@
 <?php
-	session_start();
-	include "C:/xampp/htdocs/PHP1/BabyRoller/views/connection.php";
+//     ob_start();
+//	session_start();
+	include "/storage/ssd1/275/16327275/public_html/views/connection.php";
 ?>
 
 <body class="js">
 	
-	<!-- Preloader -->
+	<!-- Preloader
 	<div class="preloader">
 		<div class="preloader-inner">
 			<div class="preloader-icon">
@@ -13,8 +14,7 @@
 				<span></span>
 			</div>
 		</div>
-	</div>
-	<!-- End Preloader -->
+	 </div>End Preloader -->
 	
 	
 	<!-- Header -->
@@ -27,7 +27,7 @@
 						<!-- Top Left -->
 						<div class="top-left">
 							<ul class="list-main">
-								<li><i class="ti-headphone-alt"></i> +060 801-582</li>
+								<li><i class="ti-folder"></i><a href="../../dokumentacija.pdf">Documentation</a></li>
 								<li><i class="ti-email"></i> support@babyroller.com</li>
 							</ul>
 						</div>
@@ -62,7 +62,7 @@
 		<div class="middle-inner">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-2 col-md-2 col-12">
+					<div class="col-lg-2 col-md-2 col-12 logo_col">
 						<!-- Logo -->
 						<div class="logo">
 							<a href="index.php"><img src="images/logo.png" alt="logo"></a>
@@ -83,29 +83,11 @@
 						<!--/ End Search Form -->
 						<div class="mobile-nav"></div>
 					</div>
-					<div class="col-lg-8 col-md-7 col-12">
-						<div class="search-bar-top">
-							<div class="search-bar">
-								<form>
-									<input name="search" placeholder="Search Products Here....." type="search">
-									<button class="btnn"><i class="ti-search"></i></button>
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-2 col-md-3 col-12">
-						<div class="right-bar">
-							<!-- Search Form -->
+				
+					<div class="col-lg-2 col-md-3 col-12 cart_col">
+						<div class="right-bar cart_col_shop">
 							<div class="sinlge-bar shopping">
-
-							<?php
-
-								// $numCount = count($_SESSION['cart']);
-								// $cont = '<a href="checkout.php" class="single-icon"><i class="ti-bag"></i> <span class="total-count">'.$numCount.'</span></a>';
-								// echo $cont;
-							?>
-								
-								<a href="checkout.php" class="single-icon"><i class="ti-bag"></i></a>
+								<a href="checkout.php" class="single-icon"><i class="ti-shopping-cart"></i></a>
 							</div>
 						</div>
 					</div>
@@ -117,12 +99,6 @@
 			<div class="container">
 				<div class="cat-nav-head">
 					<div class="row">
-						<div class="col-lg-3">
-							<div class="all-category">
-								<h3 class="cat-heading"><i class="fa fa-bars" aria-hidden="true"></i>CATEGORIES</h3>
-								
-							</div>
-						</div>
 						<div class="col-lg-9 col-12">
 							<div class="menu-area">
 								<!-- Main Menu -->
@@ -181,7 +157,8 @@
 																
 															}
 															else if($_SESSION['users']->role_id == "2"){
-																//var_dump("korisnik");
+																$admNav.="<li><a href='questionnaire.php'>Questionnaire</a></li>";
+																echo $admNav;
 															}
 														};
 													?>
